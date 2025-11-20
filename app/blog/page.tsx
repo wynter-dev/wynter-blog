@@ -1,11 +1,12 @@
 // src/app/blog/page.tsx
-import Link from "next/link";
-import { getAllPosts } from "@/lib/mdx";
-import { ArrowRight, Calendar, Tag, PlusCircle } from "lucide-react";
+import Link from 'next/link';
+import { getAllPosts } from '@/lib/mdx';
+import { ArrowRight, Calendar, Tag, PlusCircle } from 'lucide-react';
+import AdBanner from '@/components/ad/AdBanner';
 
 export const metadata = {
-  title: "Blog | Wynter.log",
-  description: "개발, 인프라, 일상 기록 블로그",
+  title: 'Blog | Wynter.log',
+  description: '개발, 인프라, 일상 기록 블로그',
 };
 
 export default async function BlogListPage() {
@@ -32,7 +33,7 @@ export default async function BlogListPage() {
             bg-background hover:bg-muted transition
           "
         >
-          <PlusCircle className="h-4 w-4" />
+          <PlusCircle className="h-4 w-4"/>
           새 글 작성
         </Link>
       </section>
@@ -65,14 +66,14 @@ export default async function BlogListPage() {
             {/* Meta */}
             <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1">
-                <Calendar className="h-3.5 w-3.5" />
+                <Calendar className="h-3.5 w-3.5"/>
                 {post.date}
               </div>
 
               {post.tags?.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <Tag className="h-3.5 w-3.5" />
-                  {post.tags.join(", ")}
+                  <Tag className="h-3.5 w-3.5"/>
+                  {post.tags.join(', ')}
                 </div>
               )}
             </div>
@@ -83,11 +84,12 @@ export default async function BlogListPage() {
               <ArrowRight className="
                 h-4 w-4 ml-1
                 transition-transform group-hover:translate-x-1
-              " />
+              "/>
             </div>
           </Link>
         ))}
       </section>
+      <AdBanner adSlot="1234567890" className="mt-10"/>
     </main>
   );
 }

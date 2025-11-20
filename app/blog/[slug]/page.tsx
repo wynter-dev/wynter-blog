@@ -1,11 +1,12 @@
-import { getPostBySlug, getAllPosts } from "@/lib/mdx";
-import "@/styles/markdown.css";
-import { Calendar, Tag } from "lucide-react";
-import Link from "next/link";
+import { getPostBySlug, getAllPosts } from '@/lib/mdx';
+import '@/styles/markdown.css';
+import { Calendar, Tag } from 'lucide-react';
+import Link from 'next/link';
+import AdBanner from '@/components/ad/AdBanner';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
-  return posts.map((p) => ({ slug: p.slug }));
+  return posts.map((p) => ({slug: p.slug}));
 }
 
 export default async function BlogPostPage({params}: {params: {slug: string}}) {
@@ -23,14 +24,14 @@ export default async function BlogPostPage({params}: {params: {slug: string}}) {
 
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" />
+            <Calendar className="h-4 w-4"/>
             {meta.date}
           </span>
 
           {meta.tags?.length > 0 && (
             <span className="flex items-center gap-1">
-              <Tag className="h-4 w-4" />
-              {meta.tags.join(", ")}
+              <Tag className="h-4 w-4"/>
+              {meta.tags.join(', ')}
             </span>
           )}
         </div>
@@ -50,6 +51,7 @@ export default async function BlogPostPage({params}: {params: {slug: string}}) {
           ← 블로그 목록
         </Link>
       </section>
+      <AdBanner adSlot="2345678901"/>
     </main>
   );
 }

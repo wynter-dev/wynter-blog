@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import { notFound } from 'next/navigation';
+import AdBanner from '@/components/ad/AdBanner';
 
 export interface PostMeta {
   slug: string;
@@ -35,9 +36,9 @@ export async function getPostBySlug(slug: string) {
 
   const fileContent = fs.readFileSync(filePath, 'utf8');
 
-  const {content, frontmatter} = await compileMDX<PostMeta>({
+  const { content, frontmatter } = await compileMDX<PostMeta>({
     source: fileContent,
-    components: {},
+    components: mdxComponents,
     options: {
       parseFrontmatter: true,
     },
@@ -91,3 +92,7 @@ export async function getAllTags() {
                .map(([tag, count]) => ({tag, count}))
                .sort((a, b) => a.tag.localeCompare(b.tag));
 }
+
+const mdxComponents = {
+  AdBanner,
+};

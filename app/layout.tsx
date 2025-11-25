@@ -33,6 +33,10 @@ const metadataBase = new URL(baseUrl);
 export const metadata: Metadata = {
   title: 'Wynter Blog',
   description: '개발, 인프라, 일상 기록 블로그',
+  verification: {
+    google: '3gdlBQNXxTs-lTdAFrssx1fETbB3w90C4WmlMooIM_o',
+  },
+
   openGraph: {
     type: 'website',
     url: 'https://wynter-dev.vercel.app/blog',
@@ -63,7 +67,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="ko" suppressHydrationWarning>
     <head>
       <meta name="google-adsense-account" content="ca-pub-6689558343928586"/>
-      <meta name="google-site-verification" content="3gdlBQNXxTs-lTdAFrssx1fETbB3w90C4WmlMooIM_o" />
     </head>
     <body
       className={cn(

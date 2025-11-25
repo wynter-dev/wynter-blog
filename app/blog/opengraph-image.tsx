@@ -11,8 +11,8 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image({params}: {params: {slug: string[]}}) {
-  const slugString = params.slug.join('/');
-
+  const slugArray = await params?.slug;
+  const slugString = slugArray?.length ? slugArray.join('/') : '/';
   const post = await getPostBySlug(slugString);
 
   if(!post) {

@@ -3,34 +3,6 @@ import { getAllPostsPaginated } from '@/utils/mdx';
 import PostCard from '@/components/blog/PostCard';
 import PageSizeSelect from '@/components/pagination/PageSizeSelect';
 
-export const metadata: Metadata = {
-  title: 'Blog | Wynter.log',
-  description: '개발, 인프라, 일상 기록 블로그',
-  openGraph: {
-    type: 'website',
-    url: 'https://wynter-dev.vercel.app/blog',
-    title: 'Blog | Wynter.log',
-    description:
-      '개발하면서 배운 것들, 인프라 트러블슈팅 기록, 일상의 생각들을 담고 있는 공간입니다.',
-    images: [
-      {
-        url: 'https://wynter-dev.vercel.app/opengraph-image', // blog OG image endpoint
-        width: 1200,
-        height: 630,
-        alt: 'Wynter.log Blog',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog | Wynter.log',
-    description:
-      '개발하면서 배운 것들, 인프라 트러블슈팅 기록, 일상의 생각들을 담고 있는 공간입니다.',
-    images: ['https://wynter-dev.vercel.app/twitter-image'],
-  },
-  metadataBase: new URL('https://wynter-dev.vercel.app'),
-};
-
 interface BlogListPageProps {
   searchParams?: {
     pageSize?: string;

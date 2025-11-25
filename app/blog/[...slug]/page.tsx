@@ -1,13 +1,15 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Calendar, Tag } from 'lucide-react';
-
-import '@/styles/markdown.css';
 import { getPostBySlug } from '@/utils/mdx';
-import BackButton from '@/components/blog/BackButton';
 import { getCategoryPairs } from '@/utils/category';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
+import BackButton from '@/components/blog/BackButton';
 
+const DEFAULT_SITE_URL = 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
+
+const metadataBase = new URL(baseUrl);
 
 export async function generateMetadata({params}: {params: {slug: string[]}}): Promise<Metadata> {
   const slugArr = params.slug;
@@ -20,19 +22,20 @@ export async function generateMetadata({params}: {params: {slug: string[]}}): Pr
   const {meta} = post;
 
   const title = meta.title;
-  const description = meta.description || ''; // excerpt 제거됨
+  const description = meta.description || '';
 
   const categoryPath = [meta.depth1, meta.depth2, meta.depth3]
     .filter(Boolean)
     .join(' / ');
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  const url = `${baseUrl}/blog/${slug}`;
-  const ogImage = `${baseUrl}/api/og/${slug}`;
+  const fullPath = slugArr.join('/');
+  const url = `${baseUrl}/blog/${fullPath}`;
+  const ogImage = `/blog/${fullPath}/opengraph-image`;
 
   return {
     title,
     description,
+    metadataBase,
     alternates: {
       canonical: url,
     },

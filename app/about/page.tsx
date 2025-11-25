@@ -1,10 +1,12 @@
-import SkillList from "@/components/about/SkillList";
-import CareerCard from "@/components/about/CareerCard";
+import SkillList from '@/components/about/SkillList';
+import CareerCard from '@/components/about/CareerCard';
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'About | Wynter.log',
+    title: {
+      absolute: 'About | Wynter.log',
+    },
   };
 }
 

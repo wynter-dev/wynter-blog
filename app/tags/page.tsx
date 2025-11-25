@@ -1,10 +1,12 @@
-import { getAllTags } from "@/utils/mdx";
+import { getAllTags } from '@/utils/mdx';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Tags | Wynter.log',
+    title: {
+      absolute: 'Tags | Wynter.log',
+    },
   };
 }
 
@@ -14,7 +16,7 @@ export default async function TagsPage() {
     <main className="flex flex-col">
       <h1 className="text-3xl font-bold tracking-tight">Tags</h1>
       <section className="flex flex-wrap gap-3 pt-5">
-        {tags.map(({ tag, count }) => (
+        {tags.map(({tag, count}) => (
           <NoPrefetchLink
             key={tag}
             href={`/tags/${tag}`}

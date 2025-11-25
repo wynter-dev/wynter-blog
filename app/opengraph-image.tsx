@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { NextRequest } from 'next/server';
 
 export const runtime = 'nodejs';
 
@@ -9,45 +10,25 @@ export const size = {
 
 export const contentType = 'image/png';
 
-export default function Image() {
+export async function GET(req: NextRequest) {
   return new ImageResponse(
     (
       <div
         style={{
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(135deg, #0F1117 0%, #1A1D27 100%)',
+          padding: '60px 80px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '60px 80px',
+          background: 'linear-gradient(135deg, #0F1117 0%, #1A1D27 100%)',
           color: 'white',
           fontFamily: 'Pretendard, sans-serif',
         }}
       >
         <div style={{fontSize: 72, fontWeight: 700}}>Wynter.log</div>
-
-        <div
-          style={{
-            fontSize: 32,
-            opacity: 0.7,
-            marginTop: 20,
-            lineHeight: 1.4,
-          }}
-        >
+        <div style={{fontSize: 32, opacity: 0.7, marginTop: 20}}>
           개발 · 인프라 · 일상 기록 블로그
-        </div>
-
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 40,
-            right: 80,
-            fontSize: 28,
-            opacity: 0.25,
-          }}
-        >
-          wynter-dev.vercel.app
         </div>
       </div>
     ),

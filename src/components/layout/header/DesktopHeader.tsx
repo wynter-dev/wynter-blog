@@ -1,17 +1,17 @@
 'use client';
 
-import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {cn} from '@/lib/utils';
 import {Github, Mail, PencilLine} from 'lucide-react';
 import {CATEGORIES, EnhancedCategoryNode, getCategoryUrl, isCategoryActive} from '@/utils/category';
 import {Button} from '@/components/ui/button';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 function Logo() {
   return (
-    <Link href="/" className="text-lg font-semibold tracking-tight">
+    <NoPrefetchLink href="/" className="text-lg font-semibold tracking-tight">
       wynter.log
-    </Link>
+    </NoPrefetchLink>
   );
 }
 
@@ -38,7 +38,7 @@ function Nav() {
 
     return (
       <div key={node.value}>
-        <Link
+        <NoPrefetchLink
           href={url}
           className={cn(
             'block px-2 py-1 rounded hover:bg-muted/40 transition',
@@ -47,7 +47,7 @@ function Nav() {
           )}
         >
           {node.label}
-        </Link>
+        </NoPrefetchLink>
 
         {hasChildren && (
           <div className="mt-1 space-y-1">
@@ -88,7 +88,7 @@ function Nav() {
               pathname === item.href && 'text-foreground font-medium'
             )}
           >
-            <Link href={item.href}>{item.label}</Link>
+            <NoPrefetchLink href={item.href}>{item.label}</NoPrefetchLink>
           </Button>
         )
       )}
@@ -99,27 +99,27 @@ function Nav() {
 function UtilityButtons() {
   return (
     <div className="hidden md:flex items-center gap-2 ml-2">
-      <Link
+      <NoPrefetchLink
         href="https://github.com/wynter-dev"
         target="_blank"
         className="flex items-center gap-1 px-2 py-1 rounded-md border hover:bg-muted transition text-xs"
       >
         <Github className="h-3 w-3" /> GitHub
-      </Link>
+      </NoPrefetchLink>
 
-      <Link
+      <NoPrefetchLink
         href="mailto:u0lee.dev@gmail.com"
         className="flex items-center gap-1 px-2 py-1 rounded-md border hover:bg-muted transition text-xs"
       >
         <Mail className="h-3 w-3" /> Email
-      </Link>
+      </NoPrefetchLink>
 
-      <Link
+      <NoPrefetchLink
         href="/blog"
         className="flex items-center gap-1 px-2 py-1 rounded-md border hover:bg-muted transition text-xs"
       >
         <PencilLine className="h-3 w-3" /> Blog
-      </Link>
+      </NoPrefetchLink>
     </div>
   );
 }

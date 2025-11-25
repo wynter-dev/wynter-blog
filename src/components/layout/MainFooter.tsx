@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export function MainFooter() {
   return (
@@ -17,13 +17,13 @@ export function MainFooter() {
       <p>© {new Date().getFullYear()} wynter.log</p>
       <p className="text-xs">Built with Next.js · TailwindCSS · shadcn/ui</p>
 
-      <Link
+      <NoPrefetchLink
         href="https://github.com/wynter-dev"
         className="text-xs underline hover:text-foreground transition"
         target="_blank"
       >
         GitHub
-      </Link>
+      </NoPrefetchLink>
     </footer>
   );
 }

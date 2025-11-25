@@ -1,11 +1,11 @@
 import {notFound} from 'next/navigation';
-import Link from 'next/link';
 import {Calendar, Tag} from 'lucide-react';
 
 import '@/styles/markdown.css';
 import {getPostBySlug} from '@/utils/mdx';
 import BackButton from '@/components/blog/BackButton';
 import {getCategoryPairs} from '@/utils/category';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export default async function BlogPostPage({params}: { params: { slug: string[] } }) {
   const resolved = await params;
@@ -34,7 +34,7 @@ export default async function BlogPostPage({params}: { params: { slug: string[] 
           <div className="text-sm text-foreground mb-4">
             {pairs.map((c, i) => (
               <div key={c.value}>
-                <Link
+                <NoPrefetchLink
                   href={`/blog/category/${pairs
                     .slice(0, i + 1)
                     .map((p) => p.value)
@@ -42,7 +42,7 @@ export default async function BlogPostPage({params}: { params: { slug: string[] 
                   className="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 hover:bg-zinc-200
                             transition-colors text-[13px] font-medium">
                   {c.name}
-                </Link>
+                </NoPrefetchLink>
               </div>
             ))}
           </div>

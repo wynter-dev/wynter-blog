@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {cn} from '@/lib/utils';
 import {BookOpen, Folder, Home, Rss} from 'lucide-react';
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
 import {CATEGORIES, EnhancedCategoryNode, getCategoryUrl, isCategoryActive} from '@/utils/category';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function Sidebar() {
 
     return (
       <div key={node.value}>
-        <Link
+        <NoPrefetchLink
           href={url}
           className={cn(
             'block py-1 rounded hover:bg-muted/40 transition',
@@ -41,7 +41,7 @@ export function Sidebar() {
           )}
         >
           {node.label}
-        </Link>
+        </NoPrefetchLink>
         {hasChildren && (
           <div className="mt-1 space-y-1">
             {node.children!.map((child: EnhancedCategoryNode) => renderCategoryNode(child, depth + 1))}
@@ -65,7 +65,7 @@ export function Sidebar() {
       <nav className="px-6 py-6 space-y-2">
         {sidebarItems.map((item) =>
           item.label !== 'Blog' ? (
-            <Link
+            <NoPrefetchLink
               key={item.href}
               href={item.href}
               className={cn(
@@ -75,7 +75,7 @@ export function Sidebar() {
             >
               <item.icon className="h-4 w-4" />
               {item.label}
-            </Link>
+            </NoPrefetchLink>
           ) : (
             <Accordion
               key="blog-accordion"
@@ -86,7 +86,7 @@ export function Sidebar() {
             >
               <AccordionItem value="blog">
                 <div className="flex items-center rounded-md hover:bg-muted transition px-3 py-2">
-                  <Link
+                  <NoPrefetchLink
                     href="/blog"
                     className={cn(
                       'flex flex-1 items-center gap-3 text-sm rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition',
@@ -95,7 +95,7 @@ export function Sidebar() {
                   >
                     <BookOpen className="h-4 w-4" />
                     <span>Blog</span>
-                  </Link>
+                  </NoPrefetchLink>
                   <AccordionTrigger className="p-2 ml-2 rounded-md hover:bg-muted transition [&>svg]:size-4" />
                 </div>
                 <AccordionContent className="pl-6 pr-2 py-3 space-y-4">

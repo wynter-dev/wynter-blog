@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { ArrowLeft, Ghost } from "lucide-react";
+import {ArrowLeft, Ghost} from 'lucide-react';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export default function NotFound() {
   return (
@@ -16,7 +16,7 @@ export default function NotFound() {
         <br />
         잠시 쉬었다 다시 시도해보세요 :)
       </p>
-      <Link
+      <NoPrefetchLink
         href="/"
         className="
           mt-8 inline-flex items-center gap-2
@@ -26,7 +26,7 @@ export default function NotFound() {
       >
         <ArrowLeft className="h-4 w-4" />
         홈으로 돌아가기
-      </Link>
+      </NoPrefetchLink>
       <div className="absolute inset-0 -z-10 flex justify-center opacity-[0.04] pointer-events-none select-none">
         <div className="h-full w-full max-w-4xl border border-foreground rounded-[3rem]" />
       </div>

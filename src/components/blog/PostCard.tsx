@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import {ArrowRight, Calendar, Tag} from 'lucide-react';
 import {getPostMetaBySlug} from '@/utils/mdx';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 interface PostCardProps {
   slug: string;
@@ -24,7 +24,7 @@ export default async function PostCard({slug, title, description, date, tags = [
   }
 
   return (
-    <Link
+    <NoPrefetchLink
       href={url}
       className="
         group block border rounded-xl p-6
@@ -63,6 +63,6 @@ export default async function PostCard({slug, title, description, date, tags = [
           "
         />
       </div>
-    </Link>
+    </NoPrefetchLink>
   );
 }

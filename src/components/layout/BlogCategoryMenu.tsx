@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import {CATEGORIES, EnhancedCategoryNode} from '@/utils/category';
 import {
   DropdownMenu,
@@ -11,6 +10,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export default function BlogCategoryMenu() {
   const renderNode = (node: EnhancedCategoryNode) => {
@@ -20,7 +20,7 @@ export default function BlogCategoryMenu() {
     if (!hasChildren) {
       return (
         <DropdownMenuItem key={node.value} asChild>
-          <Link href={`/blog/category/${node.value}`}>{node.label}</Link>
+          <NoPrefetchLink href={`/blog/category/${node.value}`}>{node.label}</NoPrefetchLink>
         </DropdownMenuItem>
       );
     }

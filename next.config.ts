@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
-  basePath: ''
+  basePath: '',
 };
 
 export default nextConfig;

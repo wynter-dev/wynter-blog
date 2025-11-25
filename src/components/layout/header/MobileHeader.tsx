@@ -1,10 +1,10 @@
 'use client';
 
 import {useState} from 'react';
-import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {CATEGORIES, EnhancedCategoryNode, getCategoryUrl, isCategoryActive} from '@/utils/category';
 import {cn} from '@/lib/utils';
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 type Props = {
   open: boolean;
@@ -31,7 +31,7 @@ export default function MobileHeader({open, setOpen}: Props) {
 
     return (
       <div key={node.value}>
-        <Link
+        <NoPrefetchLink
           href={url}
           onClick={() => setOpen(false)}
           className={cn(
@@ -41,7 +41,7 @@ export default function MobileHeader({open, setOpen}: Props) {
           )}
         >
           {node.label}
-        </Link>
+        </NoPrefetchLink>
 
         {hasChildren && (
           <div className="mt-1 space-y-1">
@@ -55,13 +55,13 @@ export default function MobileHeader({open, setOpen}: Props) {
   return (
     <div className="md:hidden border-t bg-background px-4 py-3 space-y-4">
       {/* 기본 메뉴 */}
-      <Link
+      <NoPrefetchLink
         href="/"
         onClick={() => setOpen(false)}
         className="block text-sm text-muted-foreground hover:text-foreground"
       >
         Home
-      </Link>
+      </NoPrefetchLink>
 
       {/* Blog Dropdown */}
       <div>
@@ -79,13 +79,13 @@ export default function MobileHeader({open, setOpen}: Props) {
         )}
       </div>
 
-      <Link
+      <NoPrefetchLink
         href="/about"
         onClick={() => setOpen(false)}
         className="block text-sm text-muted-foreground hover:text-foreground"
       >
         About
-      </Link>
+      </NoPrefetchLink>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { ArrowRight, PenLine } from "lucide-react";
 import { getAllPostsPaginated } from "@/utils/mdx";
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export default async function HomePage() {
   const { posts } = await getAllPostsPaginated(1, 3);
@@ -25,7 +25,7 @@ export default async function HomePage() {
           기술과 생각이 자연스럽게 쌓여가는 Wynter의 아카이브입니다.
         </p>
 
-        <Link
+        <NoPrefetchLink
           href="/blog"
           className="
             inline-flex items-center gap-2
@@ -35,7 +35,7 @@ export default async function HomePage() {
         >
           블로그 전체 글 보기
           <ArrowRight className="h-4 w-4" />
-        </Link>
+        </NoPrefetchLink>
       </section>
 
       {/* Divider */}
@@ -53,7 +53,7 @@ export default async function HomePage() {
           )}
 
           {posts.map((post) => (
-            <Link
+            <NoPrefetchLink
               href={`/blog/${post.slug}`}
               key={post.slug}
               className="
@@ -70,18 +70,18 @@ export default async function HomePage() {
               <span className="text-xs text-muted-foreground mt-2 block">
                 {post.date}
               </span>
-            </Link>
+            </NoPrefetchLink>
           ))}
         </div>
 
         <div className="pt-2">
-          <Link
+          <NoPrefetchLink
             href="/blog"
             className="text-sm text-primary hover:underline inline-flex items-center"
           >
             전체 글 보기
             <ArrowRight className="ml-1 h-4 w-4" />
-          </Link>
+          </NoPrefetchLink>
         </div>
       </section>
     </main>

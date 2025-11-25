@@ -1,5 +1,5 @@
 import { getAllTags } from "@/utils/mdx";
-import Link from "next/link";
+import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 export const metadata = {
   title: "Tags | Wynter.log",
@@ -14,13 +14,13 @@ export default async function TagsPage() {
       <h1 className="text-3xl font-bold tracking-tight">Tags</h1>
       <section className="flex flex-wrap gap-3 pt-5">
         {tags.map(({ tag, count }) => (
-          <Link
+          <NoPrefetchLink
             key={tag}
             href={`/tags/${tag}`}
             className="px-3 py-1 rounded-full text-sm border bg-muted hover:bg-muted/70 transition"
           >
             #{tag} <span className="text-muted-foreground">({count})</span>
-          </Link>
+          </NoPrefetchLink>
         ))}
       </section>
     </main>

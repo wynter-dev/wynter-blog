@@ -1,40 +1,82 @@
-import { ImageResponse } from 'next/og';
-import { getPostBySlug } from '@/utils/mdx';
+import { ImageResponse } from "next/og";
+import { getPostBySlug } from "@/utils/mdx";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
-export async function GET(req: Request, context: {params: {slug: string}}) {
-  const slug = context.params.slug;
+export const size = {
+  width: 1200,
+  height: 630,
+};
+
+export const contentType = "image/png";
+
+export async function GET(
+  req: Request,
+  context: { params: { slug: string } }
+) {
+  const { slug } = context.params;
   const post = await getPostBySlug(slug);
 
-  if(!post) {
-    return new Response('Not found', {status: 404});
+  if (!post) {
+    return new Response("Not Found", { status: 404 });
   }
 
-  const {meta} = post;
+  const title = post.meta?.title ?? "";
+  const description = post.meta?.description ?? "";
 
   return new ImageResponse(
     (
       <div
         style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          background: 'white',
-          padding: '64px',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          fontSize: 48,
-          fontWeight: 700,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "60px 80px",
+          background: "linear-gradient(135deg, #0F1117 0%, #1A1D27 100%)",
+          color: "white",
+          fontFamily: "Pretendard, sans-serif",
         }}
       >
-        <div style={{fontSize: 56, marginBottom: 24}}>{meta.title}</div>
-        <div style={{fontSize: 24, opacity: 0.6}}>{meta.description ?? ''}</div>
+        <div
+          style={{
+            fontSize: 60,
+            fontWeight: "700",
+            lineHeight: 1.25,
+            maxWidth: "90%",
+            wordBreak: "break-word",
+          }}
+        >
+          {title}
+        </div>
+
+        <div
+          style={{
+            fontSize: 28,
+            opacity: 0.7,
+            marginTop: 24,
+            maxWidth: "90%",
+            lineHeight: 1.45,
+            wordBreak: "break-word",
+          }}
+        >
+          {description}
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: 40,
+            right: 80,
+            fontSize: 28,
+            opacity: 0.25,
+          }}
+        >
+          Wynter.log
+        </div>
       </div>
     ),
-    {
-      width: 1200,
-      height: 630,
-    },
+    size
   );
 }

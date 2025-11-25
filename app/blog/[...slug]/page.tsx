@@ -28,7 +28,7 @@ export async function generateMetadata({params}: {params: {slug: string[]}}): Pr
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const url = `${baseUrl}/blog/${slug}`;
-  const ogImage = `${baseUrl}/blog/${slug}/opengraph-image`;
+  const ogImage = `${baseUrl}/api/og/${slug}`;
 
   return {
     title,

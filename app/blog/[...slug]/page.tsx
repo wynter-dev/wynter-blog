@@ -47,7 +47,7 @@ export default async function BlogPostPage({params}: { params: { slug: string[] 
               <span key={p}>
                 <Link
                   className="hover:underline underline-offset-4"
-                  href={`/blog/${fullPath.slice(0, i + 1).join('/')}`}
+                  href={`/blog/category/${fullPath.slice(0, i + 1).join('/')}`}
                 >
                   {p}
                 </Link>

@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { NextRequest } from "next/server";
 import { getPostBySlug } from "@/utils/mdx";
 
 export const runtime = "edge";
@@ -11,10 +12,10 @@ export const size = {
 export const contentType = "image/png";
 
 export async function GET(
-  req: Request,
-  context: { params: { slug: string } }
+  req: NextRequest,
+  { params }: { params: { slug: string } }
 ) {
-  const { slug } = context.params;
+  const { slug } = params;
   const post = await getPostBySlug(slug);
 
   if (!post) {
@@ -41,10 +42,10 @@ export async function GET(
       >
         <div
           style={{
-            fontSize: 60,
+            fontSize: 56,
             fontWeight: "700",
-            lineHeight: 1.25,
             maxWidth: "90%",
+            lineHeight: 1.25,
             wordBreak: "break-word",
           }}
         >
@@ -69,7 +70,7 @@ export async function GET(
             position: "absolute",
             bottom: 40,
             right: 80,
-            fontSize: 28,
+            fontSize: 26,
             opacity: 0.25,
           }}
         >

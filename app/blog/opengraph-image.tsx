@@ -12,7 +12,8 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image({params}: {params: {slug: string[]}}) {
-  const slugArray = await params?.slug;
+  const resolved = await params;
+  const slugArray = resolved.slug;
   const slugString = slugArray?.length ? slugArray.join('/') : '/';
 
   const post = await getPostBySlug(slugString);
@@ -59,8 +60,6 @@ export default async function Image({params}: {params: {slug: string[]}}) {
           justifyContent: 'center',
           position: 'relative',
           fontFamily: 'Pretendard, sans-serif',
-
-          // 전체 Glow (은근한 테두리 광택)
           boxShadow: '0 0 120px rgba(255, 255, 255, 0.06) inset',
           borderRadius: '20px',
         }}
@@ -73,8 +72,6 @@ export default async function Image({params}: {params: {slug: string[]}}) {
             lineHeight: 1.25,
             maxWidth: '90%',
             wordBreak: 'break-word',
-
-            // Light glow for title
             textShadow: `
               0 0 12px rgba(255,255,255,0.25),
               0 0 24px rgba(255,255,255,0.15)
@@ -93,8 +90,6 @@ export default async function Image({params}: {params: {slug: string[]}}) {
             lineHeight: 1.45,
             maxWidth: '90%',
             wordBreak: 'break-word',
-
-            // subtle glow
             textShadow: '0 0 10px rgba(255,255,255,0.1)',
           }}
         >

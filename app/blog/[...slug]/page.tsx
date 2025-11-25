@@ -12,8 +12,9 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
 const metadataBase = new URL(baseUrl);
 
 export async function generateMetadata({params}: {params: {slug: string[]}}): Promise<Metadata> {
-  const slugArr = params.slug;
-  const slug = slugArr?.at(-1);
+  const resolved = await params;
+  const slugArray = resolved.slug;
+  const slug = slugArray?.at(-1);
   if(!slug) return {};
 
   const post = await getPostBySlug(slug);
@@ -28,7 +29,7 @@ export async function generateMetadata({params}: {params: {slug: string[]}}): Pr
     .filter(Boolean)
     .join(' / ');
 
-  const fullPath = slugArr.join('/');
+  const fullPath = slugArray.join('/');
   const url = `${baseUrl}/blog/${fullPath}`;
   const ogImage = `/blog/${fullPath}/opengraph-image`;
 

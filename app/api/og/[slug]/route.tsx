@@ -2,8 +2,6 @@ import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { getPostBySlug } from '@/utils/mdx';
 
-export const runtime = 'edge';
-
 export const size = {
   width: 1200,
   height: 630,

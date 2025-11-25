@@ -31,7 +31,10 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
 
 const metadataBase = new URL(baseUrl);
 export const metadata: Metadata = {
-  title: 'Blog | Wynter.log',
+  title: {
+    default: 'Wynter Blog',
+    template: '%s | Wynter Blog',
+  },
   description: '개발, 인프라, 일상 기록 블로그',
   openGraph: {
     type: 'website',

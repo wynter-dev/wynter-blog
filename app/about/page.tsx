@@ -3,8 +3,8 @@ import CareerCard from '@/components/about/CareerCard';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About | Wynter.log',
-  description: '개발자 Wynter의 경력, 주요 역량 및 소개 페이지입니다.' // 덤으로 description도 추가하세요!
+  title: 'About',
+  description: '개발자 Wynter의 경력, 주요 역량 및 소개 페이지입니다.'
 };
 
 export default function AboutPage() {

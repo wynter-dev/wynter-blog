@@ -4,9 +4,7 @@ import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: {
-      absolute: 'Tags | Wynter.log',
-    },
+    title: 'Tags',
   };
 }
 

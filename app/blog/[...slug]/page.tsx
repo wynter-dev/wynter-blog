@@ -31,7 +31,7 @@ export default async function BlogPostPage({params}: { params: { slug: string[] 
         </h1>
         {/* Category Breadcrumb */}
         {hasCategory && (
-          <div className="text-sm text-foreground mb-4">
+          <div className="flex items-center gap-1 flex-wrap mb-4">
             {pairs.map((c, i) => (
               <div key={c.value}>
                 <NoPrefetchLink
@@ -40,7 +40,7 @@ export default async function BlogPostPage({params}: { params: { slug: string[] 
                     .map((p) => p.value)
                     .join('/')}`}
                   className="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 hover:bg-zinc-200
-                            transition-colors text-[13px] font-medium">
+                   transition-colors text-[13px] font-medium">
                   {c.name}
                 </NoPrefetchLink>
               </div>

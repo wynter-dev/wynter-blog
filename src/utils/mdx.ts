@@ -182,11 +182,7 @@ export async function getPostsByCategoryPaginated(
   const dir = path.join(POSTS_ROOT, ...fullPath);
   if (!fs.existsSync(dir)) return { posts: [], total: 0, totalPages: 0 };
 
-  const files = fs
-    .readdirSync(dir)
-    .filter((f) => isMarkdownFile(f))
-    .map((f) => path.join(dir, f));
-
+  const files = getAllMarkdownFilesRecursively(dir);
   return paginateFiles(files, page, pageSize);
 }
 

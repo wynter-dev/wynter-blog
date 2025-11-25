@@ -7,8 +7,6 @@ export const metadata = {
 
 export default async function TagsPage() {
   const tags = await getAllTags();
-  console.log(tags);
-
   return (
     <main className="flex flex-col">
       <h1 className="text-3xl font-bold tracking-tight">Tags</h1>

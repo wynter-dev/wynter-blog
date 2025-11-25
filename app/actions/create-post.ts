@@ -42,8 +42,6 @@ ${content}
   if (process.env.NODE_ENV === 'development') {
     fs.mkdirSync(path.dirname(localPath), {recursive: true});
     fs.writeFileSync(localPath, mdx, {encoding: 'utf8'});
-
-    console.log(`Local file created: ${localPath}`);
     return {slug, categoryPath};
   }
 

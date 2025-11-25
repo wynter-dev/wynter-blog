@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import {Octokit} from 'octokit';
-import {RequestError} from '@octokit/request-error';
+import { summarize } from '@/utils/summarize';
 
 type CreatePostParams = {
   title: string;
@@ -15,7 +15,6 @@ type CreatePostParams = {
 };
 
 export async function createPost({title, content, tags, depth1, depth2, depth3}: CreatePostParams) {
-  // slug 생성
   const slug = title
     .toLowerCase()
     .trim()
@@ -23,10 +22,8 @@ export async function createPost({title, content, tags, depth1, depth2, depth3}:
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 
-  // SEO description 생성
-  const descriptionText = generateDescription(content);
+  const descriptionText = summarize(content);
 
-  // frontmatter
   const mdx = `---
 title: "${title}"
 description: "${descriptionText}"
@@ -38,14 +35,10 @@ tags: [${tags.map((t) => `"${t}"`).join(', ')}]
 ${content}
 `;
 
-  // depth 경로 구성
   const categoryPath = [depth1, depth2, depth3].filter(Boolean).join('/');
   const filePath = `src/content/posts/${categoryPath}/${slug}.mdx`;
   const localPath = path.join(process.cwd(), filePath);
 
-  // -----------------------------------------
-  // 1) 개발환경: 로컬 파일 생성
-  // -----------------------------------------
   if (process.env.NODE_ENV === 'development') {
     fs.mkdirSync(path.dirname(localPath), {recursive: true});
     fs.writeFileSync(localPath, mdx, {encoding: 'utf8'});
@@ -54,9 +47,6 @@ ${content}
     return {slug, categoryPath};
   }
 
-  // -----------------------------------------
-  // 2) Production: GitHub에 파일 업로드
-  // -----------------------------------------
   const token = process.env.GITHUB_TOKEN!;
   const owner = process.env.GITHUB_OWNER!;
   const repo = process.env.GITHUB_REPO!;
@@ -82,7 +72,6 @@ ${content}
     console.log(err);
   }
 
-  // GitHub 에 폴더 없으면 자동 생성되지 않으므로 createOrUpdate 호출로 해결됨
   await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo,
@@ -94,22 +83,4 @@ ${content}
   });
 
   return {slug, categoryPath};
-}
-
-// ---------------------------------------------
-// Description Builder
-// ---------------------------------------------
-function generateDescription(content: string): string {
-  let text = content;
-
-  text = text.replace(/!\[.*?\]\(.*?\)/g, '');            // 이미지 제거
-  text = text.replace(/```[\s\S]*?```/g, '');             // 코드블록 제거
-  text = text.replace(/^#+\s.+$/gm, '');                  // 헤더 제거
-  text = text.replace(/`([^`]*)`/g, '$1');                // inline code
-  text = text.replace(/\[([^\]]+)]\([^)]+\)/g, '$1');     // 링크 제거
-  text = text.replace(/[*_>~\-]/g, '');                   // md 스타일 제거
-  text = text.replace(/\s+/g, ' ').trim();                // 공백 정리
-
-  if (text.length > 160) return text.substring(0, 157) + '...';
-  return text;
 }

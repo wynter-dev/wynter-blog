@@ -124,6 +124,7 @@ export const loadMarkdownFile = cache(async(filePath: string) => {
       depth3: decodeSlug(frontmatter.depth3 ?? depthInfo.depth3),
     },
     content,
+    raw,
   };
 });
 

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       '개발하면서 배운 것들, 인프라 트러블슈팅 기록, 일상의 생각들을 담고 있는 공간입니다.',
     images: [
       {
-        url: 'https://wynter-dev.vercel.app/api/og', // blog OG image endpoint
+        url: 'https://wynter-dev.vercel.app/opengraph-image', // blog OG image endpoint
         width: 1200,
         height: 630,
         alt: 'Wynter.log Blog',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: 'Blog | Wynter.log',
     description:
       '개발하면서 배운 것들, 인프라 트러블슈팅 기록, 일상의 생각들을 담고 있는 공간입니다.',
-    images: ['https://wynter-dev.vercel.app/api/og'],
+    images: ['https://wynter-dev.vercel.app/twitter-image'],
   },
   metadataBase: new URL('https://wynter-dev.vercel.app'),
 };

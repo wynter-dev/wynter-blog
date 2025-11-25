@@ -1,14 +1,24 @@
-import {getAllPosts} from '@/utils/mdx';
-import AdBanner from '@/components/ad/AdBanner';
+import {getAllPostsPaginated} from '@/utils/mdx';
 import PostCard from '@/components/blog/PostCard';
+import PageSizeSelect from '@/components/pagination/PageSizeSelect';
 
 export const metadata = {
   title: 'Blog | Wynter.log',
   description: '개발, 인프라, 일상 기록 블로그',
 };
 
-export default async function BlogListPage() {
-  const posts = await getAllPosts();
+interface BlogListPageProps {
+  searchParams?: {
+    pageSize?: string;
+  };
+}
+
+export default async function BlogListPage(props: BlogListPageProps) {
+  const resolved = await props.searchParams;
+  console.log(resolved?.pageSize);
+
+  const pageSize = Number(resolved?.pageSize ?? 10);
+  const {posts} = await getAllPostsPaginated(1, pageSize);
 
   return (
     <main className="flex flex-col">
@@ -20,20 +30,14 @@ export default async function BlogListPage() {
             일상의 생각들을 담고 있는 공간입니다.
           </p>
         </div>
+        <PageSizeSelect pageSize={pageSize} />
       </section>
-      <section className="space-y-6">
-        {posts.length === 0 && (
-          <p className="text-muted-foreground text-sm">작성된 글이 없습니다.</p>
-        )}
 
+      <section className="space-y-6">
         {posts.map((post) => (
-          <PostCard
-            key={post.slug}
-            {...post}
-          />
+          <PostCard key={post.slug} {...post} />
         ))}
       </section>
-      <AdBanner adSlot="1234567890" className="mt-10" />
     </main>
   );
 }

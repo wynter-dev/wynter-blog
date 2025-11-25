@@ -2,25 +2,30 @@ import {CategoryNode, RAW_CATEGORIES} from '@/constants/categories';
 
 export type EnhancedCategoryNode = CategoryNode & {
   fullPath: string[];
+  fullPathName: string[];
   children?: EnhancedCategoryNode[];
 };
 
 export function enhance(
   nodes: CategoryNode[],
-  parent: string[] = []
+  parent: string[] = [],
+  parentName: string[] = []
 ): EnhancedCategoryNode[] {
   return nodes.map((node): EnhancedCategoryNode => {
     const fullPath = [...parent, node.value];
+    const fullPathName = [...parentName, node.label];
 
     return {
       ...node,
       fullPath,
+      fullPathName,
       children: node.children
-        ? enhance(node.children, fullPath)
+        ? enhance(node.children, fullPath, fullPathName)
         : undefined,
     };
   });
 }
+
 
 export const CATEGORIES: EnhancedCategoryNode[] = enhance(RAW_CATEGORIES);
 

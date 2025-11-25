@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/utils/mdx';
+import { getAllPostsPaginated } from '@/utils/mdx';
 
 export const runtime = 'nodejs';
 
@@ -8,9 +8,8 @@ function isValidDate(date: string | number | Date) {
 }
 
 export async function GET() {
-  const siteUrl = 'https://wynter-dev.vercel.app';
-
-  const posts = await getAllPosts();
+  const siteUrl = process.env.HOST_DOMAIN;
+  const {posts} = await getAllPostsPaginated(1, 999999);
 
   const postUrls = posts
     .map((p) => {

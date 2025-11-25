@@ -1,27 +1,37 @@
-import {notFound} from 'next/navigation';
-import AdBanner from '@/components/ad/AdBanner';
-import {getPostsByCategory} from '@/utils/mdx';
-import {CATEGORIES, findCategoryByPath} from '@/utils/category';
+import { notFound } from 'next/navigation';
+import { CATEGORIES, findCategoryByPath } from '@/utils/category';
+import { getPostsByCategoryPaginated } from '@/utils/mdx';
 import PostCard from '@/components/blog/PostCard';
+import PageSizeSelect from '@/components/pagination/PageSizeSelect';
 
-export default async function CategoryPage({params}: { params: { category: string[] } }) {
-  const resolved = await params;
-  const categoryPath = resolved.category;
+interface CategoryPageProps {
+  params: Promise<{ category: string[] }>;
+  searchParams: Promise<{ pageSize?: string }>;
+}
+
+export default async function CategoryPage(props: CategoryPageProps) {
+  const resolved = await props;
+
+  const params = await resolved.params;
+  const searchParams = await resolved.searchParams;
+
+  const categoryPath = params.category;
+  const pageSize = Number(searchParams?.pageSize ?? 0);
 
   const category = findCategoryByPath(CATEGORIES, categoryPath);
   if (!category) return notFound();
 
-  const posts = await getPostsByCategory(category.fullPath);
+  const { posts } = await getPostsByCategoryPaginated(category.fullPath, 1, pageSize);
 
   return (
     <main className="flex flex-col">
       <section className="flex items-start justify-between mb-5">
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight">{category.label}</h1>
-          <p className="text-muted-foreground text-sm">
-            {category.fullPath.join(' / ')}
-          </p>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {category.fullPathName.join(' / ')}
+          </h1>
         </div>
+        <PageSizeSelect pageSize={pageSize} />
       </section>
 
       <section className="space-y-6">
@@ -35,8 +45,6 @@ export default async function CategoryPage({params}: { params: { category: strin
           <PostCard key={post.slug} {...post} />
         ))}
       </section>
-
-      <AdBanner adSlot="1234567890" className="mt-10" />
     </main>
   );
 }

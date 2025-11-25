@@ -1,8 +1,9 @@
-import fs from "fs";
-import path from "path";
-import { compileMDX } from "next-mdx-remote/rsc";
-import { notFound } from "next/navigation";
-import AdBanner from "@/components/ad/AdBanner";
+import fs from 'fs';
+import path from 'path';
+import { compileMDX } from 'next-mdx-remote/rsc';
+import { notFound } from 'next/navigation';
+
+import AdBanner from '@/components/ad/AdBanner';
 
 export interface PostMeta {
   slug: string;
@@ -16,197 +17,228 @@ export interface PostMeta {
   depth3?: string | null;
 }
 
-export const POSTS_ROOT = path.join(process.cwd(), "src/content/posts");
+export interface PostListResult {
+  posts: PostMeta[];
+  total: number;
+  totalPages: number;
+}
 
+export const POSTS_ROOT = path.join(process.cwd(), 'src/content/posts');
 
-/* ---------------------------------------------
- *  1) 지원할 모든 Markdown 확장자
- * ------------------------------------------- */
 export const MARKDOWN_EXTENSIONS = [
-  ".md",
-  ".mdx",
-  ".markdown",
-  ".mdown",
-  ".mkd",
-  ".mkdn"
+  '.md',
+  '.mdx',
+  '.markdown',
+  '.mdown',
+  '.mkd',
+  '.mkdn',
 ] as const;
 
 /* ---------------------------------------------
- *  2) 파일 확장자가 markdown인지 체크
+ * 공통 slug 디코딩 유틸
  * ------------------------------------------- */
-export function isMarkdownFile(filename: string): boolean {
-  return MARKDOWN_EXTENSIONS.some((ext) => filename.endsWith(ext));
+export function decodeSlug(value: string | null | undefined): string {
+  if (!value) return "";
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 /* ---------------------------------------------
- *  3) 확장자 제거 (모든 markdown 변종 지원)
+ * 공통 유틸
  * ------------------------------------------- */
-export function stripMarkdownExtension(filename: string): string {
-  let name = filename;
+export const isMarkdownFile = (filename: string) =>
+  MARKDOWN_EXTENSIONS.some((ext) => filename.endsWith(ext));
+
+export const stripMarkdownExtension = (filename: string) => {
+  const decoded = decodeSlug(filename);
+
   for (const ext of MARKDOWN_EXTENSIONS) {
-    if (name.endsWith(ext)) {
-      name = name.slice(0, -ext.length);
-      break;
-    }
-  }
-  return name;
-}
-
-
-/* ---------------------------------------------
- *  4) 재귀적으로 MDX/MD 파일 전부 찾기
- * ------------------------------------------- */
-export function getAllMarkdownFilesRecursively(dir: string): string[] {
-  let results: string[] = [];
-  if (!fs.existsSync(dir)) return results;
-
-  const files = fs.readdirSync(dir);
-
-  for (const f of files) {
-    const fullPath = path.join(dir, f);
-    const stat = fs.statSync(fullPath);
-
-    if (stat.isDirectory()) {
-      results = results.concat(getAllMarkdownFilesRecursively(fullPath));
-    } else if (isMarkdownFile(f)) {
-      results.push(fullPath);
-    }
+    if (decoded.endsWith(ext)) return decoded.slice(0, -ext.length);
   }
 
-  return results;
-}
-
+  return decoded;
+};
 
 /* ---------------------------------------------
- *  5) depth 추출
+ * depth 추출
  * ------------------------------------------- */
 export function extractDepthFromPath(filePath: string) {
   const relative = path.relative(POSTS_ROOT, filePath);
   const parts = relative.split(path.sep);
 
-  const part1 = parts[0] ?? null;
-  const part2 = parts[1] && !isMarkdownFile(parts[1]) ? parts[1] : null;
-  const part3 = parts[2] && !isMarkdownFile(parts[2]) ? parts[2] : null;
-
   return {
-    depth1: part1,
-    depth2: part2,
-    depth3: part3,
+    depth1: decodeSlug(parts[0] ?? null),
+    depth2: parts[1] && !isMarkdownFile(parts[1]) ? decodeSlug(parts[1]) : null,
+    depth3: parts[2] && !isMarkdownFile(parts[2]) ? decodeSlug(parts[2]) : null,
   };
 }
 
+/* ---------------------------------------------
+ * 재귀 탐색 (slug 검색용)
+ * ------------------------------------------- */
+export function getAllMarkdownFilesRecursively(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+
+  return fs.readdirSync(dir).flatMap((item) => {
+    const full = path.join(dir, item);
+    const stat = fs.statSync(full);
+
+    if (stat.isDirectory()) return getAllMarkdownFilesRecursively(full);
+    if (isMarkdownFile(item)) return full;
+
+    return [];
+  });
+}
 
 /* ---------------------------------------------
- *  6) 개별 MDX 파일 로드
+ * 단일 파일 로드
  * ------------------------------------------- */
 export async function loadMarkdownFile(filePath: string) {
-  const fileContent = fs.readFileSync(filePath, "utf8");
+  const raw = fs.readFileSync(filePath, 'utf8');
   const filename = path.basename(filePath);
 
-  const slug = stripMarkdownExtension(filename);
+  const rawSlug = stripMarkdownExtension(filename);
+  const slug = decodeSlug(rawSlug);
+
   const depthInfo = extractDepthFromPath(filePath);
 
   const { content, frontmatter } = await compileMDX<PostMeta>({
-    source: fileContent,
+    source: raw,
     components: mdxComponents,
-    options: { parseFrontmatter: true }
+    options: { parseFrontmatter: true },
   });
 
   return {
     meta: {
       slug,
       title: frontmatter.title ?? slug,
-      description: frontmatter.description ?? "",
-      date: frontmatter.date ?? "",
+      description: frontmatter.description ?? '',
+      date: frontmatter.date ?? '',
       tags: frontmatter.tags ?? [],
-      depth1: frontmatter.depth1 ?? depthInfo.depth1,
-      depth2: frontmatter.depth2 ?? depthInfo.depth2,
-      depth3: frontmatter.depth3 ?? depthInfo.depth3,
+      depth1: decodeSlug(frontmatter.depth1 ?? depthInfo.depth1),
+      depth2: decodeSlug(frontmatter.depth2 ?? depthInfo.depth2),
+      depth3: decodeSlug(frontmatter.depth3 ?? depthInfo.depth3),
     },
     content,
   };
 }
 
+/* ---------------------------------------------
+ * 공통 pagination 로직
+ * ------------------------------------------- */
+async function paginateFiles(
+  files: string[],
+  page: number,
+  pageSize: number
+): Promise<PostListResult> {
+  const items = files.map((file) => {
+    const stat = fs.statSync(file);
+
+    return {
+      path: file,
+      timestamp: stat.mtime.getTime(),
+    };
+  });
+
+  items.sort((a, b) => b.timestamp - a.timestamp);
+
+  const total = items.length;
+  const totalPages = Math.ceil(total / pageSize);
+
+  const start = (page - 1) * pageSize;
+  const sliced = items.slice(start, start + pageSize).map((i) => i.path);
+
+  const loaded = await Promise.all(sliced.map(loadMarkdownFile));
+
+  return {
+    posts: loaded.map((p) => p.meta),
+    total,
+    totalPages,
+  };
+}
 
 /* ---------------------------------------------
- *  7) 전체 로드
+ * 전체 글 pagination
  * ------------------------------------------- */
-export async function getAllPostsFull() {
+export async function getAllPostsPaginated(
+  page = 1,
+  pageSize = 30
+): Promise<PostListResult> {
   const files = getAllMarkdownFilesRecursively(POSTS_ROOT);
-  if (files.length === 0) return [];
-
-  const posts = await Promise.all(files.map(loadMarkdownFile));
-  return posts.map((p) => p.meta);
+  return paginateFiles(files, page, pageSize);
 }
 
-
 /* ---------------------------------------------
- *  8) 최근 N개
+ * 카테고리 pagination
  * ------------------------------------------- */
-export async function getAllPosts(limit = 30) {
-  const all = await getAllPostsFull();
-  const sorted = all.sort((a, b) => (a.date > b.date ? -1 : 1));
-  return sorted.slice(0, limit);
+export async function getPostsByCategoryPaginated(
+  fullPath: string[],
+  page = 1,
+  pageSize = 30
+) {
+  const dir = path.join(POSTS_ROOT, ...fullPath);
+  if (!fs.existsSync(dir)) return { posts: [], total: 0, totalPages: 0 };
+
+  const files = fs
+    .readdirSync(dir)
+    .filter((f) => isMarkdownFile(f))
+    .map((f) => path.join(dir, f));
+
+  return paginateFiles(files, page, pageSize);
 }
 
-
 /* ---------------------------------------------
- *  9) slug로 단일 포스트로드
+ * 단일 포스트
  * ------------------------------------------- */
 export async function getPostBySlug(slug: string) {
-  const files = getAllMarkdownFilesRecursively(POSTS_ROOT);
+  const all = getAllMarkdownFilesRecursively(POSTS_ROOT);
+  const target = decodeSlug(slug);
 
-  const filePath = files.find((f) =>
-    MARKDOWN_EXTENSIONS.some((ext) => f.endsWith(`${decodeURIComponent(slug)}${ext}`))
+  const match = all.find((f) =>
+    MARKDOWN_EXTENSIONS.some((ext) => f.endsWith(`${target}${ext}`))
   );
 
-  if (!filePath) notFound();
-  return loadMarkdownFile(filePath);
+  if (!match) notFound();
+  return loadMarkdownFile(match);
 }
 
-
 /* ---------------------------------------------
- * 10) 카테고리별 필터링
+ * 단일 메타
  * ------------------------------------------- */
-export async function getPostsByCategory(fullPath: string[]) {
-  const all = await getAllPostsFull();
+export async function getPostMetaBySlug(slug: string) {
+  const all = getAllMarkdownFilesRecursively(POSTS_ROOT);
+  const target = decodeSlug(slug);
 
-  return all.filter((post) => {
-    const arr = [post.depth1, post.depth2, post.depth3].filter(Boolean);
-    return fullPath.every((v, i) => arr[i] === v);
-  });
+  const match = all.find((f) =>
+    MARKDOWN_EXTENSIONS.some((ext) => f.endsWith(`${target}${ext}`))
+  );
+
+  if (!match) return null;
+
+  return (await loadMarkdownFile(match)).meta;
 }
 
-
 /* ---------------------------------------------
- * 11) 최근 30개 태그 정리
+ * 태그 목록
  * ------------------------------------------- */
 export async function getAllTags() {
-  const posts = await getAllPosts();
-  const tagMap: Record<string, number> = {};
+  const { posts } = await getAllPostsPaginated(1, 999999);
 
-  posts.forEach((post) => {
-    (post.tags ?? []).forEach((tag) => {
-      const clean = tag.trim();
-      if (clean.length > 0) {
-        tagMap[clean] = (tagMap[clean] || 0) + 1;
-      }
-    });
-  });
+  const map: Record<string, number> = {};
+  posts.forEach((p) =>
+    p.tags?.forEach((t) => {
+      const clean = t.trim();
+      if (!clean) return;
+      map[clean] = (map[clean] || 0) + 1;
+    })
+  );
 
-  return Object.entries(tagMap)
+  return Object.entries(map)
     .map(([tag, count]) => ({ tag, count }))
     .sort((a, b) => a.tag.localeCompare(b.tag));
 }
-
-
-/* ---------------------------------------------
- * 12) 단일 메타만 가져오기
- * ------------------------------------------- */
-export async function getPostMetaBySlug(slug: string) {
-  const all = await getAllPostsFull();
-  return all.find((p) => p.slug === slug) ?? null;
-}
-
 
 const mdxComponents = { AdBanner };

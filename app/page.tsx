@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, PenLine } from "lucide-react";
-import { getAllPosts } from "@/utils/mdx";
+import { getAllPostsPaginated } from "@/utils/mdx";
 
 export default async function HomePage() {
-  const posts = await getAllPosts();
-  const recent = posts.slice(0, 3);
+  const { posts } = await getAllPostsPaginated(1, 3);
 
   return (
     <main className="flex flex-col items-center px-6 py-20">
@@ -47,13 +46,13 @@ export default async function HomePage() {
         <h2 className="text-2xl font-semibold tracking-tight">최근 업데이트</h2>
 
         <div className="space-y-5">
-          {recent.length === 0 && (
+          {posts.length === 0 && (
             <p className="text-sm text-muted-foreground">
               아직 작성한 글이 없어요. 첫 글을 작성해보세요!
             </p>
           )}
 
-          {recent.map((post) => (
+          {posts.map((post) => (
             <Link
               href={`/blog/${post.slug}`}
               key={post.slug}

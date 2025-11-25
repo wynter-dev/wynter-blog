@@ -1,11 +1,11 @@
-import { getAllPosts } from "@/utils/mdx";
+import {getAllPostsPaginated} from '@/utils/mdx';
 
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 export async function GET() {
-  const posts = await getAllPosts();
+  const {posts} = await getAllPostsPaginated(1, 999999);
 
-  const siteUrl = "https://<YOUR_DOMAIN>"; // TODO: 수동 입력 필요
+  const siteUrl = process.env.HOST_DOMAIN;
   const updated = posts[0]?.date ?? new Date().toISOString();
 
   const items = posts
@@ -20,7 +20,7 @@ export async function GET() {
   </item>
   `
     )
-    .join("");
+    .join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -35,7 +35,7 @@ export async function GET() {
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8",
+      'Content-Type': 'application/rss+xml; charset=utf-8',
     },
   });
 }

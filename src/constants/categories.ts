@@ -14,6 +14,7 @@ export const RAW_CATEGORIES = [
         value: 'frontend',
         children: [
           {label: 'React', value: 'react'},
+          {label: 'Next', value: 'next'},
         ],
       },
       {label: '인프라', value: 'infra'},

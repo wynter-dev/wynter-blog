@@ -1,11 +1,5 @@
 import SkillList from '@/components/about/SkillList';
 import CareerCard from '@/components/about/CareerCard';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'About',
-  description: '개발자 Wynter의 경력, 주요 역량 및 소개 페이지입니다.'
-};
 
 export default function AboutPage() {
   return (

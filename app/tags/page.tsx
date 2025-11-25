@@ -1,12 +1,5 @@
 import { getAllTags } from '@/utils/mdx';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
-import { Metadata } from 'next';
-
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Tags',
-  };
-}
 
 export default async function TagsPage() {
   const tags = await getAllTags();

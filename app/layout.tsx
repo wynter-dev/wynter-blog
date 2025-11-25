@@ -31,15 +31,12 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
 
 const metadataBase = new URL(baseUrl);
 export const metadata: Metadata = {
-  title: {
-    default: 'Wynter Blog',
-    template: '%s | Wynter Blog',
-  },
+  title: 'Wynter Blog',
   description: '개발, 인프라, 일상 기록 블로그',
   openGraph: {
     type: 'website',
     url: 'https://wynter-dev.vercel.app/blog',
-    title: 'Blog | Wynter.log',
+    title: 'Blog - Wynter.log',
     description:
       '개발하면서 배운 것들, 인프라 트러블슈팅 기록, 일상의 생각들을 담고 있는 공간입니다.',
     images: [

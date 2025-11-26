@@ -63,7 +63,7 @@ export default function EditPostClient({
       originalDepth3,
     };
 
-    const res = await fetch(`/admin/posts/edit/${slug}`, {
+    const res = await fetch(`/api/admin/posts/edit/${slug}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

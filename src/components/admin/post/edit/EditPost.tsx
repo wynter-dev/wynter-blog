@@ -1,15 +1,15 @@
 'use client';
 
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import {useRouter} from 'next/navigation';
-import {Loader2} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 import CategorySelect from '@/components/admin/post/new/CategorySelect';
-import {Button} from '@/components/ui/button';
-import {useTheme} from 'next-themes';
-import {cn} from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { useTheme } from 'next-themes';
+import { cn } from '@/lib/utils';
 
-const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {ssr: false});
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 export default function EditPostClient({
                                          slug,
@@ -25,25 +25,48 @@ export default function EditPostClient({
   initialCategoryPath: string[];
 }) {
   const router = useRouter();
-  const {resolvedTheme} = useTheme();
+  const { resolvedTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState(initialTitle);
-  const [tags, setTags] = useState(initialTags);
+  const [tags, setTags] = useState(initialTags); // comma-separated string
   const [content, setContent] = useState(initialContent);
+
+  // e.g. ["frontend", "react", "hooks"]
   const [categoryPath, setCategoryPath] = useState(initialCategoryPath);
 
-  useState(() => setMounted(true));
+  // keep the original category for file path relocation
+  const [originalCategoryPath] = useState(initialCategoryPath);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
 
-    const res = await fetch(`/admin/posts/edit/${slug}/save`, {
+    const [depth1, depth2, depth3] = categoryPath;
+    const [originalDepth1, originalDepth2, originalDepth3] = originalCategoryPath;
+
+    const payload = {
+      title,
+      content,
+      tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+      depth1,
+      depth2,
+      depth3,
+      originalDepth1,
+      originalDepth2,
+      originalDepth3,
+    };
+
+    const res = await fetch(`/admin/posts/edit/${slug}`, {
       method: 'POST',
-      body: JSON.stringify({content}),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
 
     setLoading(false);
@@ -59,7 +82,6 @@ export default function EditPostClient({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 py-10">
-
       {/* Title */}
       <div>
         <h1 className="block mb-2 text-lg font-medium">제목</h1>
@@ -74,7 +96,10 @@ export default function EditPostClient({
       <CategorySelect value={categoryPath} onChange={setCategoryPath} />
 
       {/* Content */}
-      <div data-color-mode={mounted ? resolvedTheme : undefined} className={cn(`pr-1`)}>
+      <div
+        data-color-mode={mounted ? resolvedTheme : undefined}
+        className={cn(`pr-1`)}
+      >
         <label className="block mb-2 text-lg font-medium">내용</label>
         <MDEditor
           height={700}
@@ -90,6 +115,7 @@ export default function EditPostClient({
           className="w-full border rounded-md px-3 py-2 bg-background"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
+          placeholder="예: react, hooks, optimization"
         />
       </div>
 

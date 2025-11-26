@@ -46,7 +46,7 @@ export default function NewBlogPostPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/admin/posts', {
+      const res = await fetch('/api/admin/post', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -65,11 +65,7 @@ export default function NewBlogPostPage() {
         return;
       }
 
-      const data: { slug: string; categoryPath: string } = await res.json();
-
-      const categoryUrl = `/blog/category/${data.categoryPath}`;
-
-      router.push(`${categoryUrl}/${data.slug}`);
+      router.push('/admin/posts');
     } finally {
       setLoading(false);
     }

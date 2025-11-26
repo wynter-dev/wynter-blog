@@ -117,7 +117,7 @@ ${content}
 
     return NextResponse.json({slug, categoryPath});
   } catch (error) {
-    console.error('POST /api/admin/posts error:', error);
+    console.error('POST /api/admin/post error:', error);
     return NextResponse.json({error: 'Server error'}, {status: 500});
   }
 }

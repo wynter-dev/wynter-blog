@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Wynter Blog',
   description: '개발, 인프라, 일상 기록 블로그',
   verification: {
-    google: '3gdlBQNXxTs-lTdAFrssx1fETbB3w90C4WmlMooIM_o',
+    google: 'GRxUJYy7S0xdmknye9uP_c8YGuVJfevGYiZoMkDWAGI',
   },
   other: {
     'google-adsense-account': 'ca-pub-6689558343928586',

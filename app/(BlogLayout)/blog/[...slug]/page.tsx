@@ -5,6 +5,7 @@ import { getCategoryPairs } from '@/utils/category';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
 import BackButton from '@/components/blog/BackButton';
 import '@/styles/markdown.css';
+import Comments from '@/components/blog/Comments';
 
 export default async function BlogPostPage({params}: {params: {slug: string[]}}) {
   const resolved = await params;
@@ -55,6 +56,7 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
           )}
         </div>
         <article className="markdown-body my-6">{content}</article>
+        <Comments/>
         <section className="pt-4 border-t flex text-sm mb-20">
           <BackButton/>
         </section>

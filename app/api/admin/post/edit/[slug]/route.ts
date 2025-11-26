@@ -4,13 +4,20 @@ import path from 'path';
 import { Octokit } from 'octokit';
 import { summarize } from '@/utils/summarize';
 
-export async function POST(
-  request: Request,
-  {params}: {params: Promise<{slug: string}>},
-) {
+async function getSha(octokit: Octokit, owner: string, repo: string, path: string, branch: string) {
+  try {
+    const res = await octokit.rest.repos.getContent({owner, repo, path, ref: branch});
+    if(!Array.isArray(res.data) && 'sha' in res.data) {
+      return res.data.sha;
+    }
+  } catch {
+    return undefined;
+  }
+}
+
+export async function POST(request: Request, {params}: {params: Promise<{slug: string}>}) {
   try {
     const {slug} = await params;
-
     const {
       title,
       content,
@@ -34,10 +41,7 @@ export async function POST(
     } = await request.json();
 
     if(!title || !content || !depth1) {
-      return NextResponse.json(
-        {error: 'Missing required fields'},
-        {status: 400},
-      );
+      return NextResponse.json({error: 'Missing required fields'}, {status: 400});
     }
     const descriptionText = summarize(content);
 
@@ -76,78 +80,40 @@ ${content}
       });
     }
 
-    const token = process.env.GITHUB_TOKEN;
-    const owner = process.env.GITHUB_OWNER;
-    const repo = process.env.GITHUB_REPO;
+    const token = process.env.GITHUB_TOKEN!;
+    const owner = process.env.GITHUB_OWNER!;
+    const repo = process.env.GITHUB_REPO!;
     const branch = process.env.GITHUB_BRANCH ?? 'main';
 
-    if(!token || !owner || !repo) {
-      return NextResponse.json(
-        {error: 'Missing GitHub environment variables'},
-        {status: 500},
-      );
-    }
     const octokit = new Octokit({auth: token});
-    let oldSha: string | undefined = undefined;
-    try {
-      const oldFile = await octokit.rest.repos.getContent({
-        owner,
-        repo,
-        path: oldFilePath,
-        ref: branch,
-      });
 
-      if(!Array.isArray(oldFile.data) && 'sha' in oldFile.data) {
-        oldSha = oldFile.data.sha;
-      }
-    } catch {
-      oldSha = undefined;
-    }
+    const newSha = await getSha(octokit, owner, repo, newFilePath, branch);
+    const oldSha = await getSha(octokit, owner, repo, oldFilePath, branch);
+
     if(oldSha && oldFilePath !== newFilePath) {
       await octokit.rest.repos.deleteFile({
         owner,
         repo,
         path: oldFilePath,
         branch,
-        message: `Delete old post location: ${slug}`,
+        message: `Delete old location: ${slug}`,
         sha: oldSha,
       });
-    }
-    let newSha: string | undefined = undefined;
-
-    try {
-      const newFile = await octokit.rest.repos.getContent({
-        owner,
-        repo,
-        path: newFilePath,
-        ref: branch,
-      });
-
-      if(!Array.isArray(newFile.data) && 'sha' in newFile.data) {
-        newSha = newFile.data.sha;
-      }
-    } catch {
-      newSha = undefined;
     }
 
     await octokit.rest.repos.createOrUpdateFileContents({
       owner,
       repo,
-      path: newFilePath,
-      message: newSha
-        ? `Update post: ${slug}`
-        : `Create post: ${slug}`,
-      content: Buffer.from(mdx).toString('base64'),
       branch,
+      path: newFilePath,
+      content: Buffer.from(mdx).toString('base64'),
       sha: newSha,
+      message: newSha ? `Update post: ${slug}` : `Create post: ${slug}`,
     });
 
-    return NextResponse.json({
-      slug,
-      categoryPath: newCategoryPath,
-    });
-  } catch(error) {
-    console.error('POST /admin/posts/edit/[slug] error:', error);
+    return NextResponse.json({slug, categoryPath: newCategoryPath});
+  } catch(err) {
+    console.error(err);
     return NextResponse.json({error: 'Server error'}, {status: 500});
   }
 }

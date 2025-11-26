@@ -2,7 +2,6 @@
 
 import {FormEvent, useEffect, useState} from 'react';
 import dynamic from 'next/dynamic';
-import {createPost} from '@app/actions/create-post';
 import {useRouter} from 'next/navigation';
 import {Loader2} from 'lucide-react';
 import CategorySelect from '@/components/blog/new/CategorySelect';
@@ -30,7 +29,7 @@ export default function NewBlogPostPage() {
     const form = new FormData();
     form.append('file', file);
 
-    const res = await fetch('/api/upload', {method: 'POST', body: form});
+    const res = await fetch('/api/blog/image/upload', {method: 'POST', body: form});
     const data = await res.json();
     return data.url;
   }
@@ -46,25 +45,39 @@ export default function NewBlogPostPage() {
 
     setLoading(true);
 
-    const res = await createPost({
-      title,
-      content,
-      tags: tags.split(',').map((t) => t.trim()),
-      depth1,
-      depth2,
-      depth3: depth3 || null,
-    });
+    try {
+      const res = await fetch('/api/admin/posts', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          title,
+          content,
+          tags: tags.split(',').map((t) => t.trim()),
+          depth1,
+          depth2,
+          depth3: depth3 || null,
+        }),
+      });
 
-    setTimeout(()=>{
-      const fullPath = [depth1, depth2, depth3].filter(Boolean);
-      const categoryUrl = `/blog/category/${fullPath.join('/')}`;
+      if (!res.ok) {
+        setLoading(false);
+        alert('작성 중 오류가 발생했습니다.');
+        return;
+      }
+
+      const data: { slug: string; categoryPath: string } = await res.json();
+
+      const categoryUrl = `/blog/category/${data.categoryPath}`;
+
+      router.push(`${categoryUrl}/${data.slug}`);
+    } finally {
       setLoading(false);
-      router.push(`${categoryUrl}/${res.slug}`);
-    }, 2000)
+    }
   }
 
+
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col max-w-5xl">
       <h1 className="text-3xl font-semibold tracking-tight">새 글 작성</h1>
 
       <form onSubmit={handleSubmit} className="space-y-8 py-10 mb-20">
@@ -84,7 +97,7 @@ export default function NewBlogPostPage() {
         <div data-color-mode={mounted ? resolvedTheme : undefined} className={cn(`pr-1`)}>
           <label className="block mb-2 text-lg font-medium">내용</label>
           <MDEditor
-            height={500}
+            height={700}
             value={content}
             onChange={(val) => setContent(val ?? '')}
             preview="edit"

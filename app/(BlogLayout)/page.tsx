@@ -54,7 +54,7 @@ export default async function HomePage() {
 
           {posts.map((post) => (
             <NoPrefetchLink
-              href={`/blog/${post.slug}`}
+              href={`/app/(blog)/blog/${post.slug}`}
               key={post.slug}
               className="
                 block rounded-xl border p-6 transition group

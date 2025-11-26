@@ -20,7 +20,7 @@ export default function BlogCategoryMenu() {
     if (!hasChildren) {
       return (
         <DropdownMenuItem key={node.value} asChild>
-          <NoPrefetchLink href={`/blog/category/${node.value}`}>{node.label}</NoPrefetchLink>
+          <NoPrefetchLink href={`/app/(blog)/blog/category/${node.value}`}>{node.label}</NoPrefetchLink>
         </DropdownMenuItem>
       );
     }

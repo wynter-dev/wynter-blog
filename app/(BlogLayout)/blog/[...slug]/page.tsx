@@ -30,7 +30,7 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
             {pairs.map((c, i) => (
               <div key={c.value}>
                 <NoPrefetchLink
-                  href={`/blog/category/${pairs
+                  href={`/app/(blog)/blog/category/${pairs
                     .slice(0, i + 1)
                     .map((p) => p.value)
                     .join('/')}`}

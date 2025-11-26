@@ -9,6 +9,7 @@ export default async function EditPostPage({params}: { params: { slug: string } 
   const title = meta.title;
   const tags = meta.tags ?? [];
   const categoryPath = [meta.depth1, meta.depth2, meta.depth3].filter(Boolean) as string[];
+  const createdDate = meta.createdDate;
 
   return (
     <div className="flex flex-col max-w-5xl">
@@ -19,6 +20,7 @@ export default async function EditPostPage({params}: { params: { slug: string } 
         initialContent={body}
         initialTags={tags.join(', ')}
         initialCategoryPath={categoryPath}
+        createdDate={createdDate}
       />
     </div>
   );

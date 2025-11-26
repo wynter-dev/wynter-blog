@@ -14,7 +14,7 @@ export function MainFooter() {
         z-[60]
       "
     >
-      <p>© {new Date().getFullYear()} wynter.log</p>
+      <p>© 2025 wynter.log</p>
       <p className="text-xs">Built with Next.js · TailwindCSS · shadcn/ui</p>
 
       <NoPrefetchLink

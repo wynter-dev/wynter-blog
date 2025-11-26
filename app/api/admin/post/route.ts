@@ -1,8 +1,9 @@
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import {Octokit} from 'octokit';
-import {summarize} from '@/utils/summarize';
+import { Octokit } from 'octokit';
+import { summarize } from '@/utils/summarize';
+import dayjs from 'dayjs';
 
 export async function POST(req: Request) {
   try {
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
       depth3?: string | null;
     } = await req.json();
 
-    if (!title || !content || !depth1) {
+    if(!title || !content || !depth1) {
       return NextResponse.json({error: 'Missing required fields'}, {status: 400});
     }
 
@@ -38,7 +39,8 @@ export async function POST(req: Request) {
     const mdx = `---
 title: "${title}"
 description: "${descriptionText}"
-date: "${new Date().toISOString().split('T')[0]}"
+createdDate: "${dayjs().format('YYYY-MM-DD HH:mm')}"
+updatedDate: "${dayjs().format('YYYY-MM-DD HH:mm')}"
 category: ["${depth1}", "${depth2 ?? ''}"${depth3 ? `, "${depth3}"` : ''}]
 tags: [${tags.map((t) => `"${t}"`).join(', ')}]
 ---
@@ -50,7 +52,7 @@ ${content}
     const filePath = `src/content/posts/${categoryPath}/${slug}.mdx`;
     const localPath = path.join(process.cwd(), filePath);
 
-    if (process.env.NODE_ENV === 'development') {
+    if(process.env.NODE_ENV === 'development') {
       fs.mkdirSync(path.dirname(localPath), {recursive: true});
       fs.writeFileSync(localPath, mdx, {encoding: 'utf8'});
 
@@ -62,10 +64,10 @@ ${content}
     const repo = process.env.GITHUB_REPO;
     const branch = process.env.GITHUB_BRANCH ?? 'main';
 
-    if (!token || !owner || !repo) {
+    if(!token || !owner || !repo) {
       return NextResponse.json(
         {error: 'Missing GitHub environment variables'},
-        {status: 500}
+        {status: 500},
       );
     }
 
@@ -81,7 +83,7 @@ ${content}
         ref: branch,
       });
 
-      if (!Array.isArray(existingFile.data)) {
+      if(!Array.isArray(existingFile.data)) {
         sha = existingFile.data.sha;
       }
     } catch {
@@ -99,7 +101,7 @@ ${content}
     });
 
     return NextResponse.json({slug, categoryPath});
-  } catch (error) {
+  } catch(error) {
     console.error('POST /api/admin/post error:', error);
     return NextResponse.json({error: 'Server error'}, {status: 500});
   }

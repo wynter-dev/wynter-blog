@@ -63,7 +63,7 @@ export default async function HomePage() {
                 {post.description}
               </p>
               <span className="text-xs text-muted-foreground mt-2 block">
-                {post.date}
+                {post.createdDate}
               </span>
             </NoPrefetchLink>
           ))}

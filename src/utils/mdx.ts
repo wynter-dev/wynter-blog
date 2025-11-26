@@ -10,9 +10,9 @@ export interface PostMeta {
   slug: string;
   title: string;
   description?: string;
-  date: string;
+  createdDate: string;
+  updatedDate: string;
   tags?: string[];
-
   depth1?: string | null;
   depth2?: string | null;
   depth3?: string | null;
@@ -123,7 +123,8 @@ export const loadMarkdownFile = cache(async(filePath: string) => {
       slug,
       title: frontmatter.title ?? slug,
       description: frontmatter.description ?? '',
-      date: frontmatter.date ?? '',
+      createdDate: frontmatter.createdDate ?? '',
+      updatedDate: frontmatter.updatedDate ?? '',
       tags: frontmatter.tags ?? [],
       depth1: decodeSlug(frontmatter.depth1 ?? depthInfo.depth1),
       depth2: decodeSlug(frontmatter.depth2 ?? depthInfo.depth2),

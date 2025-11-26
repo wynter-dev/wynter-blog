@@ -28,7 +28,7 @@ export default async function AdminPostsPage() {
                 {[p.depth1, p.depth2, p.depth3].filter(Boolean).join(' / ')}
               </td>
 
-              <td className="p-4 text-gray-600">{p.date}</td>
+              <td className="p-4 text-gray-600">{p.createdDate}</td>
 
               <td className="p-4 text-right">
                 <Button asChild variant="outline" size="sm">

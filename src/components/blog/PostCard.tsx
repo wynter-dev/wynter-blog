@@ -1,22 +1,23 @@
-import {ArrowRight, Calendar, Tag} from 'lucide-react';
-import {getPostMetaBySlug} from '@/utils/mdx';
+import { ArrowRight, Calendar, Tag } from 'lucide-react';
+import { getPostMetaBySlug } from '@/utils/mdx';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 interface PostCardProps {
   slug: string;
   title: string;
   description?: string;
-  date: string;
+  createdDate: string;
+  updatedDate: string;
   tags?: string[];
 }
 
-export default async function PostCard({slug, title, description, date, tags = []}: PostCardProps) {
+export default async function PostCard({slug, title, description, createdDate, updatedDate, tags = []}: PostCardProps) {
 
   const url = await getPostUrl(slug);
 
   async function getPostUrl(slug: string) {
     const meta = await getPostMetaBySlug(slug);
-    if (!meta) return `/blog/${slug}`; // fallback
+    if(!meta) return `/blog/${slug}`; // fallback
 
     const parts = [meta.depth1, meta.depth2, meta.depth3, meta.slug].filter(Boolean);
 
@@ -42,13 +43,13 @@ export default async function PostCard({slug, title, description, date, tags = [
       {/* Meta */}
       <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
-          <Calendar className="h-3.5 w-3.5" />
-          {date}
+          <Calendar className="h-3.5 w-3.5"/>
+          {updatedDate !== createdDate ? `수정됨 ${updatedDate}` : `${createdDate}`}
         </div>
 
         {tags.length > 0 && (
           <div className="flex items-center gap-1">
-            <Tag className="h-3.5 w-3.5" />
+            <Tag className="h-3.5 w-3.5"/>
             {tags.join(', ')}
           </div>
         )}

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { Octokit } from 'octokit';
 import { summarize } from '@/utils/summarize';
+import dayjs from 'dayjs';
 
 async function getSha(octokit: Octokit, owner: string, repo: string, path: string, branch: string) {
   try {
@@ -28,6 +29,7 @@ export async function POST(request: Request, {params}: {params: Promise<{slug: s
       originalDepth1,
       originalDepth2,
       originalDepth3,
+      createdDate,
     }: {
       title: string
       content: string
@@ -38,6 +40,7 @@ export async function POST(request: Request, {params}: {params: Promise<{slug: s
       originalDepth1: string
       originalDepth2?: string | null
       originalDepth3?: string | null
+      createdDate: string
     } = await request.json();
 
     if(!title || !content || !depth1) {
@@ -48,7 +51,8 @@ export async function POST(request: Request, {params}: {params: Promise<{slug: s
     const mdx = `---
 title: "${title}"
 description: "${descriptionText}"
-date: "${new Date().toISOString().split('T')[0]}"
+createdDate: "${createdDate}"
+updatedDate: "${dayjs().format('YYYY-MM-DD HH:mm')}"
 category: ["${depth1}", "${depth2 ?? ''}"${depth3 ? `, "${depth3}"` : ''}]
 tags: [${tags.map((t) => `"${t}"`).join(', ')}]
 ---

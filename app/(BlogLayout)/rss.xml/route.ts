@@ -6,7 +6,7 @@ export async function GET() {
   const {posts} = await getAllPostsPaginated(1, 999999);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  const updated = posts[0]?.date ?? new Date().toISOString();
+  const updated = posts[0]?.createdDate ?? new Date().toISOString();
 
   const items = posts
     .map(
@@ -15,7 +15,7 @@ export async function GET() {
     <title><![CDATA[${post.title}]]></title>
     <link>${siteUrl}/blog/${post.slug}</link>
     <guid>${siteUrl}/blog/${post.slug}</guid>
-    <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+    <pubDate>${new Date(post.createdDate).toUTCString()}</pubDate>
     <description><![CDATA[${post.description}]]></description>
   </item>
   `

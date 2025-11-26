@@ -17,12 +17,14 @@ export default function EditPost({
                                    initialContent,
                                    initialTags,
                                    initialCategoryPath,
+                                   createdDate,
                                  }: {
   slug: string;
   initialTitle: string;
   initialContent: string;
   initialTags: string;
   initialCategoryPath: string[];
+  createdDate: string;
 }) {
   const router = useRouter();
   const {resolvedTheme} = useTheme();
@@ -51,6 +53,7 @@ export default function EditPost({
       title,
       content,
       tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+      createdDate,
       depth1,
       depth2,
       depth3,

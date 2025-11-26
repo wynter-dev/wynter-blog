@@ -1,11 +1,14 @@
+import { cn } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Calendar, Tag } from 'lucide-react';
 import { getPostBySlug } from '@/utils/mdx';
 import { getCategoryPairs } from '@/utils/category';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
 import BackButton from '@/components/blog/BackButton';
-import '@/styles/markdown.css';
+import { Badge } from '@/components/ui/badge';
 import Comments from '@/components/blog/Comments';
+
+import '@/styles/markdown.css';
 
 export default async function BlogPostPage({params}: {params: {slug: string[]}}) {
   const resolved = await params;
@@ -27,31 +30,50 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
       <div className="w-full">
         <h1 className="text-4xl font-bold tracking-tight mb-4">{meta.title}</h1>
         {hasCategory && (
-          <div className="flex items-center gap-1 flex-wrap mb-4">
-            {pairs.map((c, i) => (
-              <div key={c.value}>
-                <NoPrefetchLink
-                  href={`/app/(blog)/blog/category/${pairs
-                    .slice(0, i + 1)
-                    .map((p) => p.value)
-                    .join('/')}`}
-                  className="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 hover:bg-zinc-200
-                   transition-colors text-[13px] font-medium">
-                  {c.name}
-                </NoPrefetchLink>
-              </div>
-            ))}
+          <div className="flex items-center flex-wrap text-sm text-muted-foreground gap-1 mb-4">
+            {pairs.map((c, i) => {
+              const href = `/blog/category/${pairs
+                .slice(0, i + 1)
+                .map((p) => p.value)
+                .join('/')}`;
+
+              const isLast = i === pairs.length - 1;
+              return (
+                <div key={c.value} className="flex items-center gap-1">
+                  <NoPrefetchLink
+                    href={href}
+                    className={cn(isLast
+                      ? 'font-medium text-foreground'
+                      : 'hover:text-foreground transition-colors text-muted-foreground')}>
+                    {c.name}
+                  </NoPrefetchLink>
+                  {!isLast && (
+                    <span className="text-muted-foreground/50">/</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
+
         )}
         <div className="flex items-center gap-6 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
             <Calendar className="h-4 w-4"/>
-            {meta.date}
+            {meta.createdDate}
           </span>
           {meta.tags?.length > 0 && (
             <span className="flex items-center gap-1">
               <Tag className="h-4 w-4"/>
-              {meta.tags.join(', ')}
+              {meta.tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="secondary"
+                  className="px-2 py-0.5 rounded-md">
+                  <NoPrefetchLink href={`/tags/${tag}`}>
+                    #{tag}
+                  </NoPrefetchLink>
+                </Badge>
+              ))}
             </span>
           )}
         </div>

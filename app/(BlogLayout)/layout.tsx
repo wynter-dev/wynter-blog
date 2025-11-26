@@ -48,9 +48,9 @@ export default function BlogLayout({children}: { children: ReactNode }) {
           geistMono.variable,
         )}
       >
-        <div className="relative mx-auto w-full max-w-[1024px] px-4">
+        <div className="relative mx-auto w-full max-w-screen-2xl px-4">
           <MainHeader />
-          <div className="flex flex-1 mx-auto w-full max-w-[1024px] px-4">
+          <div className="flex flex-1 mx-auto w-full max-w-screen-2xl px-4">
             <Sidebar />
             <main className="flex-1 relative overflow-y-auto py-12 md:pl-10">
               {children}

@@ -23,7 +23,7 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
 
   return (
     <main className="flex flex-1">
-      <div className="w-full max-w-3xl">
+      <div className="w-full">
         <h1 className="text-4xl font-bold tracking-tight mb-4">{meta.title}</h1>
         {hasCategory && (
           <div className="flex items-center gap-1 flex-wrap mb-4">

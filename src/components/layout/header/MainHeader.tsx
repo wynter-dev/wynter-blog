@@ -18,7 +18,7 @@ export default function MainHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur">
-      <div className="mx-auto max-w-[1024px] flex h-14 items-center justify-between px-4">
+      <div className="mx-auto flex h-14 items-center justify-between px-4">
         <DesktopHeader.Logo />
         <DesktopHeader.Nav />
         <div className="flex items-center gap-3">

@@ -20,14 +20,10 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          padding: '60px 80px',
+          padding: '80px',
           justifyContent: 'space-between',
-
-          // 더 자연스럽고 부드러운 코랄 계열 그라데이션
-          background: 'linear-gradient(135deg, #ffa2b6 10%, #f7c5a4 55%, #f48b4a 100%)',
-
-          // 텍스트 색: 배경과 조화된 브라운-그레이
-          color: '#3a2f2f',
+          background: 'linear-gradient(135deg, #0F1117 0%, #1A1D27 100%)',
+          color: 'white',
         }}
       >
         {/* 상단 타이틀 */}
@@ -45,12 +41,12 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
 
           <div
             style={{
-              fontSize: 30,
+              fontSize: 25,
               fontWeight: 700,
               opacity: 0.8,
               maxWidth: '80%',
               lineHeight: 1.45,
-              padding: '10px 0',
+              padding: '10px',
             }}
           >
             {meta.description}
@@ -62,7 +58,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            fontSize: 28,
+            fontSize: 25,
             alignItems: 'center',
           }}
         >
@@ -70,7 +66,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
 
           <div
             style={{
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: 700,
               opacity: 0.7,
             }}

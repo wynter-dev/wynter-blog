@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'nodejs';
-
 export const size = {
   width: 1200,
   height: 630,
@@ -9,7 +7,7 @@ export const size = {
 
 export const contentType = 'image/png';
 
-export default async function Image() {
+export default function Image() {
   return new ImageResponse(
     (
       <div
@@ -18,17 +16,38 @@ export default async function Image() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           justifyContent: 'center',
-          padding: '80px',
-          background: 'linear-gradient(135deg, #5be6d5 0%, #9a8dff 50%, #ff82c5 100%)',
-          color: '#ffffff',
+          padding: '60px 80px',
+          background: 'linear-gradient(135deg, #0F1117 0%, #1A1D27 100%)',
+          color: 'white',
           fontFamily: 'Pretendard, sans-serif',
         }}
       >
-        <div style={{fontSize: 80, fontWeight: 700}}>Wynter.log</div>
-        <div style={{fontSize: 40, opacity: 0.7, marginTop: 20, fontWeight: 400}}>
+        <div style={{fontSize: 72, fontWeight: '700', lineHeight: 1.2}}>
+          Wynter.log
+        </div>
+
+        <div
+          style={{
+            fontSize: 32,
+            marginTop: 20,
+            opacity: 0.7,
+            lineHeight: 1.4,
+          }}
+        >
           개발 · 인프라 · 일상 기록 블로그
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 40,
+            right: 80,
+            fontSize: 28,
+            opacity: 0.25,
+          }}
+        >
+          wynter-dev.vercel.app
         </div>
       </div>
     ),

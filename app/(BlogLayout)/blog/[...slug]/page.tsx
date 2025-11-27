@@ -56,25 +56,25 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
           </div>
 
         )}
-        <div className="flex items-center gap-6 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1">
+        <div className="flex gap-4 text-sm text-muted-foreground flex-col">
+          <span className="flex items-center gap-1 max-w-md">
             <Calendar className="h-4 w-4"/>
             {meta.createdDate}
           </span>
           {meta.tags?.length > 0 && (
-            <span className="flex items-center gap-1">
+            <div className="flex items-center align-center gap-1 flex-wrap">
               <Tag className="h-4 w-4"/>
               {meta.tags.map((tag) => (
                 <Badge
                   key={tag}
                   variant="secondary"
-                  className="px-2 py-0.5 rounded-md">
+                  className="px-2 py-1 rounded-md mb-1">
                   <NoPrefetchLink href={`/tags/${tag}`}>
                     #{tag}
                   </NoPrefetchLink>
                 </Badge>
               ))}
-            </span>
+            </div>
           )}
         </div>
         <article className="markdown-body my-6">{content}</article>

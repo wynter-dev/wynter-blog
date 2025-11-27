@@ -32,7 +32,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
         <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
           <div
             style={{
-              fontSize: 60,
+              fontSize: 70,
               fontWeight: 900,
               lineHeight: 1.5,
               maxWidth: '90%',
@@ -43,7 +43,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
 
           <div
             style={{
-              fontSize: 40,
+              fontSize: 50,
               fontWeight: 900,
               opacity: 0.7,
               maxWidth: '80%',
@@ -60,7 +60,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            fontSize: 30,
+            fontSize: 40,
             alignItems: 'center',
           }}
         >
@@ -74,7 +74,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
 
           <div
             style={{
-              fontSize: 20,
+              fontSize: 40,
               opacity: 0.6,
             }}
           >

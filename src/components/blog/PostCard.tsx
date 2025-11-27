@@ -41,7 +41,7 @@ export default async function PostCard({slug, title, description, createdDate, u
       </p>
 
       {/* Meta */}
-      <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
+      <div className="flex gap-2 mt-4 text-xs text-muted-foreground flex-col lg:flex-row lg:gap-4">
         <div className="flex items-center gap-1">
           <Calendar className="h-3.5 w-3.5"/>
           {updatedDate !== createdDate ? `수정됨 ${updatedDate}` : `${createdDate}`}

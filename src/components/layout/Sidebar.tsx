@@ -1,11 +1,12 @@
 'use client';
 
-import {usePathname} from 'next/navigation';
-import {cn} from '@/lib/utils';
-import {BookOpen, Folder, Home, Rss} from 'lucide-react';
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
-import {CATEGORIES, EnhancedCategoryNode, getCategoryUrl, isCategoryActive} from '@/utils/category';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { BookOpen, Folder, Home, Rss } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { CATEGORIES, EnhancedCategoryNode, getCategoryUrl, isCategoryActive } from '@/utils/category';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
+import VisitorStats from '@/components/analytics/VisitorStats';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -14,7 +15,6 @@ export function Sidebar() {
     {href: '/', label: 'Home', icon: Home},
     {href: '/blog', label: 'Blog', icon: BookOpen},
     {href: '/tags', label: 'Tags', icon: Folder},
-    {href: '/rss.xml', label: 'RSS', icon: Rss},
   ];
 
   const renderCategoryNode = (node: EnhancedCategoryNode, depth = 1) => {
@@ -38,7 +38,7 @@ export function Sidebar() {
             'relative block py-1 px-2 rounded overflow-hidden',
             'hover:bg-muted/70 hover:text-gray-500 text-secondary',
             depthStyle,
-            active && `bg-muted text-primary font-bold`
+            active && `bg-muted text-primary font-bold`,
           )}
         >
           {node.label}
@@ -47,7 +47,7 @@ export function Sidebar() {
         {hasChildren && (
           <div className="mt-1 space-y-1">
             {node.children!.map((child: EnhancedCategoryNode) =>
-              renderCategoryNode(child, depth + 1)
+              renderCategoryNode(child, depth + 1),
             )}
           </div>
         )}
@@ -59,51 +59,57 @@ export function Sidebar() {
   const isBlogActive = pathname.startsWith('/blog');
 
   return (
-    <nav className="p-6 h-full space-y-2 pb-5 overflow-y-auto">
-      {sidebarItems.map((item) =>
-        item.label !== 'Blog' ? (
-          <NoPrefetchLink
-            key={item.href}
-            href={item.href}
-            className={cn(
-              'flex items-center gap-3 text-sm px-3 py-2 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition',
-              pathname === item.href && 'bg-muted text-foreground font-medium'
-            )}
-          >
-            <item.icon className="h-4 w-4" />
-            {item.label}
-          </NoPrefetchLink>
-        ) : (
-          <Accordion
-            key="blog-accordion"
-            type="single"
-            collapsible
-            defaultValue={isBlogActive ? 'blog' : undefined}
-            className="w-full"
-          >
-            <AccordionItem value="blog">
-              <div className="flex items-center rounded-md hover:bg-muted transition px-3 py-1">
-                <NoPrefetchLink
-                  href="/blog"
-                  className={cn(
-                    'flex flex-1 items-center gap-3 text-sm rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition',
-                    isBlogActive && 'text-foreground font-medium'
-                  )}
-                >
-                  <BookOpen className="h-4 w-4" />
-                  <span>Blog</span>
-                </NoPrefetchLink>
+    <div className="flex flex-col h-full">
+      <nav className="flex-1 p-3 space-y-2 pb-5 overflow-y-auto">
+        {sidebarItems.map((item) =>
+          item.label !== 'Blog' ? (
+            <NoPrefetchLink
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'flex items-center gap-3 text-sm px-3 py-2 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition',
+                pathname === item.href && 'bg-muted text-foreground font-medium',
+              )}
+            >
+              <item.icon className="h-4 w-4"/>
+              {item.label}
+            </NoPrefetchLink>
+          ) : (
+            <Accordion
+              key="blog-accordion"
+              type="single"
+              collapsible
+              defaultValue={isBlogActive ? 'blog' : undefined}
+              className="w-full"
+            >
+              <AccordionItem value="blog">
+                <div className="flex items-center rounded-md hover:bg-muted transition px-3 py-1">
+                  <NoPrefetchLink
+                    href="/blog"
+                    className={cn(
+                      'flex flex-1 items-center gap-3 text-sm rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition',
+                      isBlogActive && 'text-foreground font-medium',
+                    )}
+                  >
+                    <BookOpen className="h-4 w-4"/>
+                    <span>Blog</span>
+                  </NoPrefetchLink>
 
-                <AccordionTrigger className="p-2 ml-2 rounded-md hover:bg-muted transition [&>svg]:size-4" />
-              </div>
+                  <AccordionTrigger className="p-2 ml-2 rounded-md hover:bg-muted transition [&>svg]:size-4"/>
+                </div>
 
-              <AccordionContent className="pl-4 py-1 space-y-4">
-                {CATEGORIES.map((category) => renderCategoryNode(category))}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )
-      )}
-    </nav>
+                <AccordionContent className="pl-4 py-1 space-y-4">
+                  {CATEGORIES.map((category) => renderCategoryNode(category))}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ),
+        )}
+      </nav>
+      <div className="flex justify-between items-end p-4 border-t">
+        <VisitorStats/>
+        <NoPrefetchLink href="/rss.xml"><Rss className="w-5 text-muted-foreground"/></NoPrefetchLink>
+      </div>
+    </div>
   );
 }

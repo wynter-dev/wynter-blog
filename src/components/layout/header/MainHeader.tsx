@@ -26,18 +26,16 @@ export default function MainHeader() {
           <div className="md:hidden block py-3">
             <VisitorStats />
           </div>
-          {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="rounded-md border px-2 py-1 hover:bg-muted transition"
-            >
-              {resolvedTheme === 'dark' ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </button>
-          )}
+          <button
+            onClick={toggleTheme}
+            className="rounded-md border px-2 py-1 hover:bg-muted transition"
+          >
+            {resolvedTheme === 'dark' ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+          </button>
           <DesktopHeader.UtilityButtons />
           <button
             className="md:hidden rounded-md border px-2 py-1 hover:bg-muted transition"

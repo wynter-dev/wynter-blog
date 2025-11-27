@@ -23,7 +23,7 @@ export function Sidebar() {
 
     const depthStyle =
       depth === 1
-        ? 'pl-0 text-md font-semibold text-foreground'
+        ? 'pl-2 text-md font-semibold text-foreground'
         : depth === 2
           ? 'pl-4 text-sm font-medium text-muted-foreground'
           : 'pl-8 text-sm font-normal text-muted-foreground/80';
@@ -31,23 +31,28 @@ export function Sidebar() {
     const hasChildren = Array.isArray(node.children) && node.children.length > 0;
 
     return (
-      <div key={node.value}>
+      <div key={node.value} className="relative">
         <NoPrefetchLink
           href={url}
           className={cn(
-            'block py-1 rounded hover:bg-muted/40 transition',
+            'relative block py-1 px-2 rounded overflow-hidden',
+            'hover:bg-muted/70 hover:text-gray-500 text-secondary',
             depthStyle,
-            active && 'bg-muted text-primary font-bold'
+            active && `border-2 bg-muted text-primary font-bold`
           )}
         >
           {node.label}
         </NoPrefetchLink>
+
         {hasChildren && (
           <div className="mt-1 space-y-1">
-            {node.children!.map((child: EnhancedCategoryNode) => renderCategoryNode(child, depth + 1))}
+            {node.children!.map((child: EnhancedCategoryNode) =>
+              renderCategoryNode(child, depth + 1)
+            )}
           </div>
         )}
       </div>
+
     );
   };
 

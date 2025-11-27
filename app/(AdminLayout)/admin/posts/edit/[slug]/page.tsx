@@ -12,8 +12,8 @@ export default async function EditPostPage({params}: { params: { slug: string } 
   const createdDate = meta.createdDate;
 
   return (
-    <div className="flex flex-col max-w-5xl">
-      <h1 className="text-3xl font-semibold tracking-tight">수정</h1>
+    <div className="flex flex-col">
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">수정</h1>
       <EditPost
         slug={slug}
         initialTitle={title}

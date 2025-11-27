@@ -17,7 +17,7 @@ export default async function BlogListPage(props: BlogListPageProps) {
     <div className="flex flex-col">
       <section className="flex items-start justify-between mb-5">
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight">블로그</h1>
+          <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">블로그</h1>
         </div>
         <PageSizeSelect pageSize={pageSize}/>
       </section>

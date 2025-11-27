@@ -7,7 +7,7 @@ export default function NotFound() {
       <div className="mb-6">
         <Ghost className="h-16 w-16 text-muted-foreground animate-pulse" />
       </div>
-      <h1 className="text-3xl font-semibold tracking-tight mb-3">
+      <h1 className="text-4xl font-semibold tracking-tight mb-3">
         페이지를 찾을 수 없어요
       </h1>
       <p className="text-muted-foreground max-w-md text-sm leading-6">

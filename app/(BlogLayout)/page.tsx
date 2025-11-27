@@ -15,7 +15,7 @@ export default async function HomePage() {
           Wynter.log — Dev, Infra & Everyday Notes
         </div>
 
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
           프론트엔드, 인프라,<br />
           그리고 일상을 적어가는 공간
         </h1>

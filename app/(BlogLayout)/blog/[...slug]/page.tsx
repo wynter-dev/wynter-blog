@@ -28,7 +28,7 @@ export default async function BlogPostPage({params}: { params: { slug: string[] 
   return (
     <div className="flex flex-col">
       <h1
-        className="md:text-4xl text-2xl sm:text-3xl font-bold tracking-tight mb-4 wrap-break-word whitespace-normal">{meta.title}</h1>
+        className="md:text-4xl sm:text-3xl text-2xl font-bold tracking-tight mb-4 wrap-break-word whitespace-normal">{meta.title}</h1>
       {hasCategory && (
         <div className="flex items-center flex-wrap text-sm text-muted-foreground gap-1 mb-4">
           {pairs.map((c, i) => {

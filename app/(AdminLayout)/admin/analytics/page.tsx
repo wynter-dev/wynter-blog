@@ -51,9 +51,8 @@ export default function AdminAnalyticsPage() {
   }, []);
 
   return (
-    <div className="space-y-8 p-6">
-
-      {/* Today Stats */}
+    <div className="flex flex-col gap-4">
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">사용자 지표</h1>
       <Card>
         <CardHeader>
           <CardTitle>방문자 요약</CardTitle>
@@ -82,7 +81,7 @@ export default function AdminAnalyticsPage() {
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
-              <Line type="monotone" dataKey="users" stroke="#ff4d6d" strokeWidth={3} dot />
+              <Line type="monotone" dataKey="users" stroke="#ff4d6d" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </CardContent>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /*?*
+Sitemap: https://wynter-dev.vercel.app/sitemap.xml

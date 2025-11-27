@@ -10,7 +10,7 @@ export default async function TagsPage() {
         {tags.map(({tag, count}) => (
           <NoPrefetchLink
             key={tag}
-            href={`/app/tags/${tag}`}
+            href={`/tags/${tag}`}
             className="px-3 py-1 rounded-full text-sm border bg-muted hover:bg-muted/70 transition"
           >
             #{tag} <span className="text-muted-foreground">({count})</span>

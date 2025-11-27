@@ -1,10 +1,10 @@
-import type {ReactNode} from 'react';
-import {Metadata} from 'next';
+import type { ReactNode } from 'react';
+import { Metadata } from 'next';
 import '@/styles/globals.css';
 import Script from 'next/script';
 import localFont from 'next/font/local';
-import {Geist_Mono} from 'next/font/google';
-import {cn} from '@/lib/utils';
+import { Geist_Mono } from 'next/font/google';
+import { cn } from '@/lib/utils';
 
 const DEFAULT_SITE_URL = 'http://localhost:3000';
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   },
   other: {
     'google-adsense-account': 'ca-pub-6689558343928586',
+    'naver-site-verification': 'ae884de6cab8b3873195b98280f30b0376afe713',
   },
   openGraph: {
     type: 'website',
@@ -64,7 +65,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export default function RootLayout({children}: { children: ReactNode }) {
+export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="ko" suppressHydrationWarning>
     <head>

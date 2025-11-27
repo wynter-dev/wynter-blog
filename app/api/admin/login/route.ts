@@ -5,7 +5,7 @@ export async function POST(req: Request) {
 
   const adminPassword = process.env.ADMIN_PASSWORD;
   if (!adminPassword) {
-    console.error('❌ ADMIN_PASSWORD is not set on server environment');
+    console.error('ADMIN_PASSWORD is not set on server environment');
     return new NextResponse('Server config error', {status: 500});
   }
 

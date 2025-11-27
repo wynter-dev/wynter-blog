@@ -1,23 +1,23 @@
-import { cn } from '@/lib/utils';
-import { notFound } from 'next/navigation';
-import { Calendar, Tag } from 'lucide-react';
-import { getPostBySlug } from '@/utils/mdx';
-import { getCategoryPairs } from '@/utils/category';
+import {cn} from '@/lib/utils';
+import {notFound} from 'next/navigation';
+import {Calendar, Tag} from 'lucide-react';
+import {getPostBySlug} from '@/utils/mdx';
+import {getCategoryPairs} from '@/utils/category';
 import NoPrefetchLink from '@/components/NoPrefetchLink';
 import BackButton from '@/components/blog/BackButton';
-import { Badge } from '@/components/ui/badge';
+import {Badge} from '@/components/ui/badge';
 import Comments from '@/components/blog/Comments';
 
 import '@/styles/markdown.css';
 
-export default async function BlogPostPage({params}: {params: {slug: string[]}}) {
+export default async function BlogPostPage({params}: { params: { slug: string[] } }) {
   const resolved = await params;
   const slugArray = resolved.slug;
   const slug = slugArray.at(-1);
-  if(!slug) return notFound();
+  if (!slug) return notFound();
 
   const post = await getPostBySlug(slug);
-  if(!post) return notFound();
+  if (!post) return notFound();
 
   const {meta, content} = post;
 
@@ -28,7 +28,8 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
   return (
     <div className="flex flex-1">
       <div className="w-full">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">{meta.title}</h1>
+        <h1
+          className="text-2xl md:text-4xl sm:text-3xl font-bold tracking-tight mb-4 wrap-break-word whitespace-normal">{meta.title}</h1>
         {hasCategory && (
           <div className="flex items-center flex-wrap text-sm text-muted-foreground gap-1 mb-4">
             {pairs.map((c, i) => {
@@ -56,14 +57,14 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
           </div>
 
         )}
-        <div className="flex gap-4 text-sm text-muted-foreground flex-col">
-          <span className="flex items-center gap-1 max-w-md">
-            <Calendar className="h-4 w-4"/>
+        <div className="flex gap-6 text-sm text-muted-foreground flex-col lg:flex-row">
+          <div className="flex items-center gap-1 max-w-md">
+            <Calendar className="h-4 w-4" />
             {meta.createdDate}
-          </span>
+          </div>
           {meta.tags?.length > 0 && (
             <div className="flex items-center align-center gap-1 flex-wrap">
-              <Tag className="h-4 w-4"/>
+              <Tag className="h-4 w-4" />
               {meta.tags.map((tag) => (
                 <Badge
                   key={tag}
@@ -78,9 +79,9 @@ export default async function BlogPostPage({params}: {params: {slug: string[]}})
           )}
         </div>
         <article className="markdown-body my-6">{content}</article>
-        <Comments/>
+        <Comments />
         <section className="pt-4 flex text-sm mb-20">
-          <BackButton/>
+          <BackButton />
         </section>
       </div>
     </div>

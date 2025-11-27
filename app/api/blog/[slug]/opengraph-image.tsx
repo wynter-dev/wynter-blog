@@ -23,16 +23,16 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           flexDirection: 'column',
           padding: '60px 80px',
           justifyContent: 'space-between',
-          background: 'linear-gradient(135deg, #5be6d5 0%, #9a8dff 50%, #ff82c5 100%)',
-          border: '1px solid #ececec',
-          color: '#fff',
+          background: 'linear-gradient(135deg, #ff8fb0 10%, #f6c8a6 55%, #f28a57 100%)',
+          border: '1px solid #e4a0b6',
+          color: '#272727',
         }}
       >
         {/* 상단 타이틀 */}
         <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
           <div
             style={{
-              fontSize: 70,
+              fontSize: 60,
               fontWeight: 900,
               lineHeight: 1.5,
               maxWidth: '90%',
@@ -43,7 +43,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
 
           <div
             style={{
-              fontSize: 50,
+              fontSize: 30,
               fontWeight: 900,
               opacity: 0.7,
               maxWidth: '80%',
@@ -60,7 +60,7 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            fontSize: 40,
+            fontSize: 30,
             alignItems: 'center',
           }}
         >
@@ -74,7 +74,8 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
 
           <div
             style={{
-              fontSize: 40,
+              fontSize: 22,
+              fontWeight: 700,
               opacity: 0.6,
             }}
           >

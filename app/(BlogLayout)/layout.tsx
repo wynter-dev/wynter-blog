@@ -17,22 +17,24 @@ export default function BlogLayout({children}: {children: ReactNode}) {
 
         <div className="flex pt-16 mx-auto max-w-screen-xl md:h-[calc(100vh-10dvh)] h-full w-screen overflow-hidden">
           {/* Sidebar (PC Only) */}
-          <aside className="flex-1 hidden md:block h-full w-full border-r bg-background z-[900]">
+          <aside className="max-w-50 hidden md:block h-full w-full border-r bg-background z-[900]">
             <Sidebar/>
           </aside>
 
           {/* Content Scroll Container */}
-          <main className="lg:flex-5 md:flex-3 flex-1 h-full overflow-y-auto md:p-8 p-4">
+          <main
+            className="flex-1 overflow-y-auto md:p-8 p-4 h-auto min-h-[calc(100vh-64px)] md:h-full md:min-h-0">
             {children}
             {/* Mobile footer inside flow */}
-            <div className="md:hidden">
+            <div className="md:hidden mt-5 h-20">
               <MainFooter/>
             </div>
           </main>
         </div>
 
         {/* Footer (Fixed on PC) */}
-        <div className="hidden md:block fixed bottom-0 h-[10dvh] left-1/2 -translate-x-1/2 w-full max-w-screen-xl z-[999]">
+        <div
+          className="hidden md:block fixed bottom-0 h-[10dvh] left-1/2 -translate-x-1/2 w-full max-w-screen-xl z-[999]">
           <MainFooter/>
         </div>
       </div>

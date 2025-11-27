@@ -10,14 +10,11 @@ import Comments from '@/components/blog/Comments';
 
 import '@/styles/markdown.css';
 
-export async function generateImageMetadata({params}: {params: { slug: string }}) {
-  const slug = params.slug.at(-1);
+export async function generateMetadata({params}: {  params: Promise<{ slug: string }>}) {
+  const { slug } = await params;
+  const blogSlug = slug.at(-1);
 
-  if(!slug || slug.length === 0) {
-    return {};
-  }
-
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlug(blogSlug ?? '');
   const {meta} = post;
 
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || '';
@@ -42,7 +39,6 @@ export async function generateImageMetadata({params}: {params: { slug: string }}
     },
   };
 }
-
 
 export default async function BlogPostPage({params}: {params: {slug: string[]}}) {
   const resolved = await params;

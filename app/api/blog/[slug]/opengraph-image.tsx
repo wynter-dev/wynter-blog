@@ -7,7 +7,6 @@ export const contentType = 'image/png';
 
 export default async function Image({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
-  console.log(slug);
 
   const post = await getPostBySlug(slug);
   const {meta} = post;
@@ -23,9 +22,12 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           flexDirection: 'column',
           padding: '60px 80px',
           justifyContent: 'space-between',
-          background: 'linear-gradient(135deg, #ff8fb0 10%, #f6c8a6 55%, #f28a57 100%)',
-          border: '1px solid #e4a0b6',
-          color: '#272727',
+
+          // 더 자연스럽고 부드러운 코랄 계열 그라데이션
+          background: 'linear-gradient(135deg, #ffa2b6 10%, #f7c5a4 55%, #f48b4a 100%)',
+
+          // 텍스트 색: 배경과 조화된 브라운-그레이
+          color: '#3a2f2f',
         }}
       >
         {/* 상단 타이틀 */}
@@ -44,11 +46,11 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           <div
             style={{
               fontSize: 30,
-              fontWeight: 900,
-              opacity: 0.7,
+              fontWeight: 700,
+              opacity: 0.8,
               maxWidth: '80%',
               lineHeight: 1.45,
-              padding: '10px',
+              padding: '10px 0',
             }}
           >
             {meta.description}
@@ -60,23 +62,17 @@ export default async function Image({params}: {params: Promise<{slug: string}>})
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            fontSize: 30,
+            fontSize: 28,
             alignItems: 'center',
           }}
         >
-          <div
-            style={{
-              fontWeight: 700,
-            }}
-          >
-            Wynter.log
-          </div>
+          <div style={{ fontWeight: 800 }}>Wynter.log</div>
 
           <div
             style={{
               fontSize: 22,
               fontWeight: 700,
-              opacity: 0.6,
+              opacity: 0.7,
             }}
           >
             {dayjs(meta.createdDate).format('YYYY-MM-DD')}

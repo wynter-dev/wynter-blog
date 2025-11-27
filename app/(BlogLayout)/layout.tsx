@@ -22,7 +22,7 @@ export default function BlogLayout({children}: {children: ReactNode}) {
           </aside>
 
           {/* Content Scroll Container */}
-          <div className="flex flex-col overflow-y-auto md:p-8 p-4 h-full">
+          <div className="flex flex-1 flex-col overflow-y-auto md:p-8 p-4 h-full">
             <main className="flex-1">
               {children}
             </main>

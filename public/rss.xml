@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Wynter.log RSS</title>
+        <link>https://wynter-dev.vercel.app</link>
+        <description>Wynter Blog Feed</description>
+        <lastBuildDate>Wed, 26 Nov 2025 10:00:00 GMT</lastBuildDate>
+
+        <item>
+            <title><![CDATA[Next.js16으로 블로그 개발하기]]></title>
+            <link>https://wynter-dev.vercel.app/blog/nextjs16으로-블로그-개발하기</link>
+            <guid>https://wynter-dev.vercel.app/blog/nextjs16으로-블로그-개발하기</guid>
+            <pubDate>Wed, 26 Nov 2025 10:00:00 GMT</pubDate>
+            <description><![CDATA[개발 일을 오래 하다 보면 어느 순간부터 ‘내가 해결한 문제들이 시간 속에 묻혀 사라지는 느낌’ 이 들기 시작한다. 프로젝트가 바뀌면 문서는 사라지고, 코드는 리포지토리 깊숙이 묻히고, 어떤 흐름으로 문제를 해결했는지 남길 공간도 점점 줄어든다. 특히 프론트엔드 개발자는 기술 변화...]]></description>
+        </item>
+
+    </channel>
+</rss>

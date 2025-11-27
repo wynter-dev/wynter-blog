@@ -9,7 +9,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 export default function BlogLayout({children}: {children: ReactNode}) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem enableColorScheme={false}>
-      <div className="w-screen h-screen flex flex-col">
+      <div className="w-screen h-screen flex flex-col overflow-hidden">
         {/* Header (Fixed) */}
         <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-screen-xl z-[999]">
           <MainHeader/>

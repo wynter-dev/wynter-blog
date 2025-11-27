@@ -60,6 +60,10 @@ export function Sidebar() {
 
   return (
     <div className="flex flex-col h-full">
+      <div className="flex justify-between items-end px-6 py-4 border-b">
+        <VisitorStats/>
+        <NoPrefetchLink href="/rss.xml"><Rss className="w-5 text-muted-foreground"/></NoPrefetchLink>
+      </div>
       <nav className="flex-1 p-3 space-y-2 pb-5 overflow-y-auto">
         {sidebarItems.map((item) =>
           item.label !== 'Blog' ? (
@@ -83,7 +87,7 @@ export function Sidebar() {
               className="w-full"
             >
               <AccordionItem value="blog">
-                <div className="flex items-center rounded-md hover:bg-muted transition px-3 py-1">
+                <div className="flex items-center rounded-md hover:bg-muted transition px-3 py-0.5">
                   <NoPrefetchLink
                     href="/blog"
                     className={cn(
@@ -106,10 +110,6 @@ export function Sidebar() {
           ),
         )}
       </nav>
-      <div className="flex justify-between items-end p-4 border-t">
-        <VisitorStats/>
-        <NoPrefetchLink href="/rss.xml"><Rss className="w-5 text-muted-foreground"/></NoPrefetchLink>
-      </div>
     </div>
   );
 }

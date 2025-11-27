@@ -15,7 +15,7 @@ export default function BlogLayout({children}: {children: ReactNode}) {
           <MainHeader/>
         </div>
 
-        <div className="flex pt-16 mx-auto max-w-screen-xl md:h-[calc(100dvh-10dvh)] h-full w-screen overflow-hidden">
+        <div className="flex pt-15 mx-auto max-w-screen-xl md:h-[calc(100dvh-10dvh)] h-full w-screen overflow-hidden">
           {/* Sidebar (PC Only) */}
           <aside className="max-w-50 hidden md:block h-full w-full border-r bg-background z-[900]">
             <Sidebar/>

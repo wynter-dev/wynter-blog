@@ -9,7 +9,7 @@ import NoPrefetchLink from '@/components/NoPrefetchLink';
 
 function Logo() {
   return (
-    <NoPrefetchLink href="/" className="text-lg font-semibold tracking-tight">
+    <NoPrefetchLink href="/" className="text-2xl font-medium tracking-tight">
       wynter.log
     </NoPrefetchLink>
   );

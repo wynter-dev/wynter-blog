@@ -27,7 +27,7 @@ export async function generateMetadata({params}: {  params: Promise<{ slug: stri
       description: meta.description,
       images: [
         {
-          url: `${SITE_URL}/api/blog/${slug}/opengraph-image`,
+          url: `${SITE_URL}/api/blog/${blogSlug}/opengraph-image`,
           width: 1200,
           height: 630,
         },
@@ -35,7 +35,7 @@ export async function generateMetadata({params}: {  params: Promise<{ slug: stri
     },
     twitter: {
       card: 'summary_large_image',
-      images: [`${SITE_URL}/api/blog/${slug}/opengraph-image`],
+      images: [`${SITE_URL}/api/blog/${blogSlug}/opengraph-image`],
     },
   };
 }

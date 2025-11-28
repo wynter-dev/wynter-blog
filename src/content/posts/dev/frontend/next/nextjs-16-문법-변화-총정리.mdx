@@ -1,0 +1,140 @@
+---
+title: "Next.js 16 문법 변화 총정리"
+description: "Next.js 16부터 Server Component가 더 강하게 기본값으로 적용된다. ------------------------------------------------------------------------ React 19 Server Function 모델을 적용해 더 ..."
+createdDate: "2025-11-28 21:12"
+updatedDate: "2025-11-28 21:12"
+category: ["dev", "frontend", "next"]
+tags: ["next.js16", "next.js"]
+---
+
+## 1. 서버 컴포넌트 방식 강화
+
+Next.js 16부터 Server Component가 더 강하게 기본값으로 적용된다.
+
+-   `"use client"` 없는 파일은 모두 서버에서 렌더링
+-   컴포넌트 자체가 async 가능
+-   fetch는 서버에서 자동으로 memoized
+
+``` tsx
+export default async function Page() {
+  const data = await getData()
+  return <div>{data}</div>
+}
+```
+
+------------------------------------------------------------------------
+
+## 2. Server Actions 문법 개선 (React 19 방식)
+
+React 19 Server Function 모델을 적용해 더 일관적인 문법으로 바뀌었다.
+
+``` tsx
+'use server'
+
+export async function createPost(data: FormData) {
+  // 서버 전용 로직
+}
+```
+
+form과 직접 연결 가능:
+
+``` tsx
+<form action={createPost}>
+  <input name="title" />
+</form>
+```
+
+------------------------------------------------------------------------
+
+## 3. App Router 파라미터가 Promise 기반으로 변경됨
+
+**Next.js 16의 가장 큰 변화 중 하나.**
+
+기존에는 params가 바로 객체였다.
+
+``` tsx
+export default function Page({ params }) {
+  const slug = params.slug
+}
+```
+
+### 변경 후: params가 Promise로 전달됨
+
+``` tsx
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  return <div>{slug}</div>
+}
+```
+
+### 모든 라우트 함수가 동일 규칙 적용
+
+-   `page.tsx`
+-   `layout.tsx`
+-   `generateMetadata`
+-   `generateStaticParams`
+
+예:
+
+``` tsx
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>
+}) {
+  const { slug } = await params
+  return {
+    title: slug.join(" / ")
+  }
+}
+```
+
+------------------------------------------------------------------------
+
+## 4. React 19 기능 포함
+
+-   useOptimistic
+-   useActionState
+-   useTransition 개선
+-   useDeferredValue 안정화
+
+------------------------------------------------------------------------
+
+## 5. 이미지 처리 개선
+
+`<Image>`가 자동으로 WebP/AVIF 포맷을 선택하고 블러 placeholder를 자동
+생성할 수 있도록 최적화됨.
+
+------------------------------------------------------------------------
+
+## 6. Static / Dynamic 렌더링 구분 강화
+
+-   `dynamic = "force-static"` → 정적
+-   `dynamic = "force-dynamic"` → SSR 강제
+-   서버 기능(fetch, cookies 등) 사용 시 자동 SSR
+
+------------------------------------------------------------------------
+
+## 7. Turbopack Dev 성능 강화
+
+-   2\~3배 빨라짐
+-   HMR 속도 향상
+-   Webpack을 거의 사용할 필요 없음
+
+------------------------------------------------------------------------
+
+## 8. Middleware 안정화 & Edge Runtime 강화
+
+------------------------------------------------------------------------
+
+## 9. Metadata 타입 강화
+
+``` ts
+export const metadata = {
+  title: "블로그"
+} satisfies Metadata
+```

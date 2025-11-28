@@ -1,9 +1,9 @@
 'use client';
 
-import {FormEvent, useEffect, useState} from 'react';
+import {FormEvent, useEffect, useRef, useState} from 'react';
 import dynamic from 'next/dynamic';
 import {useRouter} from 'next/navigation';
-import {Loader2} from 'lucide-react';
+import {Loader2, Image as ImageIcon} from 'lucide-react';
 import CategorySelect from '@/components/admin/post/new/CategorySelect';
 import {Button} from '@/components/ui/button';
 import {useTheme} from 'next-themes';
@@ -22,10 +22,11 @@ export default function NewBlogPostPage() {
   const [content, setContent] = useState('');
 
   const [categoryPath, setCategoryPath] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => setMounted(true), []);
 
-  async function handleImageUpload(file: File) {
+  async function handleImageUpload(file: File): Promise<string> {
     const form = new FormData();
     form.append('file', file);
 
@@ -36,15 +37,14 @@ export default function NewBlogPostPage() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     const [depth1, depth2, depth3] = categoryPath;
+
     if (!depth1) {
       alert('카테고리 depth1는 반드시 선택해야 합니다.');
       return;
     }
 
     setLoading(true);
-
     try {
       const res = await fetch('/api/admin/post', {
         method: 'POST',
@@ -71,6 +71,17 @@ export default function NewBlogPostPage() {
     }
   }
 
+  function triggerFileSelect() {
+    fileInputRef.current?.click();
+  }
+
+  async function handleSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const url = await handleImageUpload(file);
+    setContent((prev) => prev + `\n\n![](${url})\n`);
+  }
 
   return (
     <div className="flex flex-col">
@@ -86,12 +97,21 @@ export default function NewBlogPostPage() {
             required
           />
         </div>
-        <CategorySelect
-          value={categoryPath}
-          onChange={setCategoryPath}
-        />
+
+        <CategorySelect value={categoryPath} onChange={setCategoryPath} />
+
         <div data-color-mode={mounted ? resolvedTheme : undefined} className={cn(`pr-1`)}>
           <label className="block mb-2 text-lg font-medium">내용</label>
+
+          {/* 숨겨진 업로드 input */}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleSelectFile}
+          />
+
           <MDEditor
             height={700}
             value={content}
@@ -104,10 +124,24 @@ export default function NewBlogPostPage() {
                 setContent((prev) => prev + `\n\n![](${url})\n`);
               }
             }}
+            extraCommands={[
+              {
+                name: 'upload-image',
+                keyCommand: 'upload-image',
+                buttonProps: {
+                  title: '이미지 업로드',
+                },
+                icon: (
+                  <div className="flex items-center">
+                    <ImageIcon size={18} />
+                  </div>
+                ),
+                execute: () => triggerFileSelect(),
+              },
+            ]}
           />
         </div>
 
-        {/* Tags */}
         <div>
           <label className="block mb-2 text-lg font-medium">태그</label>
           <input
@@ -117,7 +151,6 @@ export default function NewBlogPostPage() {
           />
         </div>
 
-        {/* Submit button */}
         <Button
           type="submit"
           disabled={loading}

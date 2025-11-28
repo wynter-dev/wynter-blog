@@ -12,7 +12,7 @@ export default async function EditPostPage({params}: {params: {slug: string}}) {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">수정</h1>
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight mb-10">수정</h1>
       <EditPost
         slug={slug}
         initialTitle={title}

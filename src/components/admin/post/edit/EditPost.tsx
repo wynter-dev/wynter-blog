@@ -80,7 +80,7 @@ export default function EditPost({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 py-10">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Title */}
       <div>
         <h1 className="block mb-2 text-lg font-medium">제목</h1>

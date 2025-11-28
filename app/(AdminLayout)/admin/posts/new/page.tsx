@@ -74,9 +74,9 @@ export default function NewBlogPostPage() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">새 글 작성</h1>
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight mb-10">새 글 작성</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-8 py-10">
+      <form onSubmit={handleSubmit} className="space-y-8">
         <div>
           <h1 className="block mb-2 text-lg font-medium">제목</h1>
           <input

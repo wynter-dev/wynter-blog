@@ -77,7 +77,7 @@ export default function BlogEditor({ value, onChange }: BlogEditorProps) {
   // 이미지 HTML 삽입
   function insertImage(url: string) {
     const imgHtml = `
-<img src="${url}" data-zoom="true" class="rounded cursor-zoom-in max-w-full" />
+<img src="${url}" data-zoom="true" className="rounded cursor-zoom-in max-w-full" />
 `;
 
     if (value.includes('<!-- image-placeholder -->')) {

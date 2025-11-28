@@ -48,7 +48,7 @@ export default function BlogEditor({value, onChange}: BlogEditorProps) {
   function insertImage(url: string) {
     const html = `
 <img src="${url}" data-zoom="true"
-  class="rounded cursor-zoom-in max-w-full my-4" />
+  className="rounded cursor-zoom-in max-w-full my-4" />
 `;
 
     insertAtCursor(`\n${html}\n`);

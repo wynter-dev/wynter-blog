@@ -19,8 +19,7 @@ interface TagDetailPageProps {
 }
 
 export default async function TagDetailPage({params}: TagDetailPageProps) {
-  const {tag: rawTag} = await params;
-  const tag = rawTag;
+  const {tag} = await params;
 
   const {posts} = await getAllPostsPaginated(1, 999999);
   const filtered = posts.filter((p) => p.tags?.includes(tag));

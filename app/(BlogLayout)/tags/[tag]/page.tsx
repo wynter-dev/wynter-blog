@@ -1,4 +1,4 @@
-import {getAllPostsPaginated} from '@/utils/mdx';
+import { getAllPostsPaginated } from '@/utils/mdx';
 import PostCard from '@/components/blog/PostCard';
 
 /* ---------------------------------------------
@@ -8,18 +8,19 @@ export async function generateStaticParams() {
   const {posts} = await getAllPostsPaginated(1, 999999);
 
   const tagSet = new Set(posts.flatMap((p) => p.tags ?? []));
-  return [...tagSet].map((tag) => ({tag: encodeURIComponent(tag)}));
+  return [...tagSet].map((tag) => ({tag}));
 }
 
 /* ---------------------------------------------
  * TAG 상세 페이지
  * ------------------------------------------- */
 interface TagDetailPageProps {
-  params: { tag: string };
+  params: {tag: string};
 }
 
 export default async function TagDetailPage({params}: TagDetailPageProps) {
-  const {tag} = await params;
+  const {tag: rawTag} = await params;
+  const tag = decodeURIComponent(rawTag);
 
   const {posts} = await getAllPostsPaginated(1, 999999);
   const filtered = posts.filter((p) => p.tags?.includes(tag));

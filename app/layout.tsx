@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   other: {
     'google-adsense-account': 'ca-pub-6689558343928586',
-    'naver-site-verification': 'ae884de6cab8b3873195b98280f30b0376afe713',
+    'naver-site-verification': 'e0e91508c527b3631c2bf878d15090477e805e0e',
   },
   openGraph: {
     type: 'website',

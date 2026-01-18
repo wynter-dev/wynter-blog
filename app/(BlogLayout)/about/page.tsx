@@ -27,7 +27,7 @@ export default function AboutPage() {
         <div className="space-y-4">
           <CareerCard
             company="페이민트"
-            period="2024.10 - 재직중"
+            period="2024.10 - 2025.12"
             position="프론트엔드 팀장"
             details={[
               '핀테크 서비스 결제선생 운영 및 개발',
